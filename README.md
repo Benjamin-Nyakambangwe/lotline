@@ -42,4 +42,26 @@ sudo -u postgres createdb -O lotline lotline
 sudo -u postgres psql -d lotline -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 ```
 
+### Signing in locally
+
+Lotline is invite-only. The account named by `OWNER_EMAIL` in `.env.local` can always sign in and becomes the admin:
+
+1. Set `OWNER_EMAIL=you@example.com` in `.env.local`.
+2. `npm run dev`, open http://localhost:3000 and enter that email.
+3. In development (`AUTH_EMAIL_MODE=console`) the sign-in link is printed in the terminal running the app.
+
+Invite others from **Admin → People**. You get a link to send privately; it signs them in once and lasts 7 days. The same form makes a fresh sign-in link for an existing member.
+
+### End-to-end tests
+
+E2E runs against a separate `lotline_test` database (create it once: `createdb -O lotline lotline_test`, then `CREATE EXTENSION pg_trgm` in it) with a throwaway owner, `owner@lotline.test`:
+
+```bash
+node scripts/with-test-db.mjs npx tsx scripts/migrate.ts
+node scripts/with-test-db.mjs npx next dev -p 3001 > /tmp/lotline-e2e.log 2>&1 &
+E2E_SERVER_LOG=/tmp/lotline-e2e.log npm run e2e
+```
+
+Playwright uses your installed Chrome. A setup step signs the owner in once through the real form; the tests reuse that session.
+
 Tests never call ABC. They use the scrubbed fixtures in `tests/fixtures/abc/`, which contain no real bidder IDs; a test enforces that.
