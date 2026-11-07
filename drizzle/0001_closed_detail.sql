@@ -1,0 +1,1 @@
+ALTER TABLE "closed_prices" ADD COLUMN "detail_fetched_at" timestamp with time zone;

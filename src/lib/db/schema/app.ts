@@ -436,6 +436,8 @@ export const closedPrices = pgTable(
     confidence: text("confidence")
       .$type<"observed" | "sweep" | "backfill">()
       .notNull(),
+    /** when we last read this lot's detail for categories, fees and the real close time */
+    detailFetchedAt: ts("detail_fetched_at"),
     createdAt: created(),
     updatedAt: updated(),
   },

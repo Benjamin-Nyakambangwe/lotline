@@ -42,6 +42,17 @@ sudo -u postgres createdb -O lotline lotline
 sudo -u postgres psql -d lotline -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 ```
 
+### The worker
+
+`npm run dev:worker` runs the background worker (the only part that talks to ABC):
+
+- **Catalogue:** a full sync of open lots every 10 minutes by day and 30 at night. That's about 2,500 lots in 7 requests of 500.
+- **Sold sweep:** sold lots go into market insights every 3 hours. The first run backfills about 1,500.
+- **Details:** each lot's category, condition, fees and photos are fetched one at a time, every few seconds. Once every open lot has them, the worker completes sold lots for market insights.
+- **Requests from the app:** handled as they arrive (LISTEN `lotline_fetch`).
+
+All requests share one limiter (≤ 6 concurrent, ≤ 3/s) and a circuit breaker. `ABC_POLLING_ENABLED=false` stops everything. Only one worker polls at a time: a second instance stands by and takes over within seconds (Postgres advisory lock). Health: `GET http://localhost:8081/healthz`.
+
 ### Signing in locally
 
 Lotline is invite-only. The account named by `OWNER_EMAIL` in `.env.local` can always sign in and becomes the admin:
