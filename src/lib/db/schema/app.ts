@@ -10,6 +10,7 @@ import {
   numeric,
   pgTable,
   primaryKey,
+  real,
   serial,
   smallint,
   text,
@@ -562,3 +563,39 @@ export const syncRuns = pgTable(
   },
   (t) => [index("sync_runs_kind_started_idx").on(t.kind, t.startedAt)],
 );
+
+/**
+ * The historical backfill: ABC's search only lists recent sold lots, but lot detail still
+ * serves old ones by ID, so the worker walks IDs downward (one crawl per lot type). All
+ * progress lives here, so a restart resumes from next_id.
+ */
+export const historyCrawls = pgTable("history_crawls", {
+  key: text("key").$type<"goods" | "vehicles">().primaryKey(),
+  /** ABC lot type: 1 goods, 2 vehicles (separate ID ranges) */
+  type: smallint("type").notNull(),
+  startId: integer("start_id").notNull(),
+  /** the next ID to fetch, walking down */
+  nextId: integer("next_id").notNull(),
+  /** stop once lots are consistently older than this */
+  cutoff: ts("cutoff").notNull(),
+  /** moving share of recent (after cutoff) lots among the last few hundred dated ones */
+  recentEma: real("recent_ema").notNull().default(1),
+  dated: integer("dated").notNull().default(0),
+  /** latest close (or start) date seen near the cursor, for progress */
+  reachedAt: ts("reached_at"),
+  missingStreak: integer("missing_streak").notNull().default(0),
+  fetched: integer("fetched").notNull().default(0),
+  sold: integer("sold").notNull().default(0),
+  passed: integer("passed").notNull().default(0),
+  other: integer("other").notNull().default(0),
+  missing: integer("missing").notNull().default(0),
+  skipped: integer("skipped").notNull().default(0),
+  errors: integer("errors").notNull().default(0),
+  /** requests made on `day` (UTC, matching the client's daily cap) */
+  day: date("day", { mode: "string" }),
+  dayCount: integer("day_count").notNull().default(0),
+  startedAt: ts("started_at").notNull().defaultNow(),
+  updatedAt: ts("updated_at").notNull().defaultNow(),
+  doneAt: ts("done_at"),
+  doneReason: text("done_reason"),
+});

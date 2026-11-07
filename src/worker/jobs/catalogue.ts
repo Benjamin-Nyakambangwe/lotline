@@ -54,13 +54,14 @@ async function run<T>(
 
 /**
  * Full sync of "Available" lots (~2,000 in about 5 requests of 500). Upserts list fields,
- * and records lots that passed with no bids (Status 3) for market insights.
+ * and records lots that already sold (Status 2) or passed with no bids (Status 3) for market
+ * insights straight away, rather than waiting for the sold sweep.
  */
 export async function syncCatalogue(db: Db, abc: AbcClient, log: Logger) {
   return run(db, "catalogue", async (rec) => {
     const started = Date.now();
     const tracked = await trackedLotIds(db);
-    const passed: LotListRow[] = [];
+    const closed: LotListRow[] = [];
     let invalid = 0;
     let count = 0;
     for await (const page of abc.searchAll(
@@ -71,16 +72,20 @@ export async function syncCatalogue(db: Db, abc: AbcClient, log: Logger) {
       invalid += page.invalid;
       count = page.count;
       rec.upserts += await upsertListRows(db, page.items, tracked);
-      passed.push(...page.items.filter((x) => x.status === STATUS.passed));
+      closed.push(
+        ...page.items.filter(
+          (x) => x.status === STATUS.passed || x.status === STATUS.sold,
+        ),
+      );
     }
-    if (passed.length) await upsertClosedFromList(db, passed, "sweep");
+    if (closed.length) await upsertClosedFromList(db, closed, "sweep");
     if (invalid) rec.notes.push(`${invalid} invalid items skipped`);
     log.info(
       {
         pages: rec.pages,
         upserts: rec.upserts,
         count,
-        passed: passed.length,
+        closed: closed.length,
         invalid,
         ms: Date.now() - started,
       },

@@ -9,7 +9,9 @@
  *  - catalogue   full "Available" sync every 10 min by day, 30 min at night
  *  - categories  tag every open lot with its category (~12 requests) every hour
  *  - sold        sweep sold lots into market insights every 3 h
- *  - enrich      one lot detail every few seconds until every lot has one
+ *  - enrich      one lot detail every few seconds until every lot has one, then lots that
+ *                ended without us seeing the result, then sold lots for market insights
+ *  - history     the 12-month backfill of past lots, one gentle request at a time (resumes)
  *  - requests    the web app's on-demand fetches (LISTEN lotline_fetch + 2 s poll)
  *  - heartbeat   worker_heartbeat row + /healthz freshness
  */
@@ -28,6 +30,11 @@ import {
   enrichOne,
   refreshClosedFromLots,
 } from "./jobs/enrich";
+import {
+  type HistoryState,
+  historyStep,
+  initialHistoryState,
+} from "./jobs/history";
 import { Leader } from "./leader";
 import { createLogger } from "./log";
 import { Loops } from "./loops";
@@ -40,7 +47,10 @@ class Metrics {
   private reqs: { at: number; ms: number; ok: boolean }[] = [];
   lastError: string | null = null;
   record(i: RequestInfo) {
-    const ok = typeof i.status === "number" && i.status < 400;
+    // 400/404 is ABC saying "no such lot" (the backfill meets these): a healthy answer.
+    const ok =
+      typeof i.status === "number" &&
+      (i.status < 400 || i.status === 400 || i.status === 404);
     if (!ok) this.lastError = `${i.status} ${i.path.split("?")[0]}`;
     this.reqs.push({ at: Date.now(), ms: i.ms, ok });
     const cutoff = Date.now() - 10 * MIN;
@@ -114,6 +124,7 @@ async function main() {
     },
   });
 
+  const history: HistoryState = initialHistoryState();
   const health: HealthState = {
     role: "starting",
     instanceId,
@@ -125,6 +136,7 @@ async function main() {
       abc: metrics.summary(),
       queued: limiter.queued,
       inFlight: limiter.inFlight,
+      history: cfg.HISTORY_ENABLED ? history : "disabled",
     }),
   };
   const server = startHealthServer(cfg.WORKER_HEALTH_PORT, health);
@@ -177,6 +189,16 @@ async function main() {
           (await enrichOne(db, abc, log)) ? cfg.ENRICH_EVERY_MS : MIN,
         errorDelayMs: 30_000,
       },
+      ...(cfg.HISTORY_ENABLED
+        ? [
+            {
+              name: "history",
+              initialDelayMs: 60_000,
+              run: () => historyStep(db, abc, log, cfg, history),
+              errorDelayMs: MIN,
+            },
+          ]
+        : []),
       {
         name: "closed-refresh",
         initialDelayMs: 5 * MIN,
@@ -198,9 +220,16 @@ async function main() {
         run: async () => {
           const m = metrics.summary();
           const queueDepths = Object.fromEntries(
-            (["hot", "ondemand", "warm", "sync", "enrich"] as Priority[]).map(
-              (p) => [p, limiter.queuedBy(p)],
-            ),
+            (
+              [
+                "hot",
+                "ondemand",
+                "warm",
+                "sync",
+                "enrich",
+                "history",
+              ] as Priority[]
+            ).map((p) => [p, limiter.queuedBy(p)]),
           );
           const row = {
             id: 1,

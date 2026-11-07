@@ -24,6 +24,19 @@ const schema = z.object({
   SOLD_SWEEP_EVERY_MIN: z.coerce.number().positive().default(180),
   /** pause between enrichment detail fetches */
   ENRICH_EVERY_MS: z.coerce.number().int().min(500).default(3000),
+  /** Historical backfill: walk old lot IDs through the detail endpoint (see jobs/history.ts). */
+  HISTORY_ENABLED: bool.default(true),
+  HISTORY_MONTHS: z.coerce.number().int().min(1).max(120).default(12),
+  /** pause between backfill requests overnight (22:00 to 06:00) and by day */
+  HISTORY_NIGHT_MS: z.coerce.number().int().min(500).default(1000),
+  HISTORY_DAY_MS: z.coerce.number().int().min(500).default(3000),
+  /** no backfill in these hours (Harare), when lots close and live polling matters most */
+  HISTORY_PAUSE_FROM_HOUR: z.coerce.number().int().min(0).max(23).default(16),
+  HISTORY_PAUSE_TO_HOUR: z.coerce.number().int().min(0).max(23).default(22),
+  /** backfill requests per UTC day, persisted so restarts don't reset it */
+  HISTORY_DAILY_MAX: z.coerce.number().int().min(0).default(22_000),
+  /** always leave this much of ABC_DAILY_CAP for live use */
+  HISTORY_RESERVE: z.coerce.number().int().min(0).default(15_000),
   DISPLAY_TZ: z.string().default("Africa/Harare"),
   LOG_LEVEL: z
     .enum(["fatal", "error", "warn", "info", "debug", "trace"])

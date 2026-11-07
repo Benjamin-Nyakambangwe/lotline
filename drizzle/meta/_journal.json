@@ -15,6 +15,13 @@
       "when": 1794064653183,
       "tag": "0001_closed_detail",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794074747450,
+      "tag": "0002_history_crawl",
+      "breakpoints": true
     }
   ]
 }

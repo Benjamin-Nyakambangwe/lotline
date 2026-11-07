@@ -8,13 +8,16 @@ import {
   closedNeedingDetail,
   enrichClosedFromLots,
   markClosedDetailChecked,
+  upsertClosedFromList,
 } from "@/lib/db/queries/closed";
+import { lotsAwaitingFinal } from "@/lib/db/queries/history";
 import {
   lotsNeedingDetail,
   trackedLotIds,
   upsertDetail,
 } from "@/lib/db/queries/lots";
 import { fetchRequests, lots } from "@/lib/db/schema";
+import { STATUS } from "@/lib/domain/closing";
 import type { Logger } from "../log";
 
 /** ABC descriptions are untrusted HTML: keep simple formatting only, no attributes, no links. */
@@ -60,7 +63,11 @@ export async function enrichOne(
 ): Promise<boolean> {
   const tracked = await trackedLotIds(db);
   const [next] = await lotsNeedingDetail(db, 1, tracked);
-  if (!next) return enrichOneClosed(db, abc, log);
+  if (!next)
+    return (
+      (await finalizeOneEnded(db, abc, log, tracked)) ||
+      enrichOneClosed(db, abc, log)
+    );
   try {
     await fetchAndStoreDetail(
       db,
@@ -79,6 +86,40 @@ export async function enrichOne(
         .set({ detailFetchedAt: new Date() })
         .where(eq(lots.id, next.id));
     }
+    throw e;
+  }
+  return true;
+}
+
+/**
+ * Lots that ended but we never saw close: once a lot is sold it drops out of "Available", and
+ * ABC's sold search doesn't list every sale, so read the result from its detail instead.
+ */
+async function finalizeOneEnded(
+  db: Db,
+  abc: AbcClient,
+  log: Logger,
+  tracked: Set<number>,
+): Promise<boolean> {
+  const [next] = await lotsAwaitingFinal(db, 1);
+  if (!next) return false;
+  try {
+    const d = await abc.detail(next.id, next.type, "enrich");
+    await upsertDetail(db, d, { tracked: tracked.has(next.id), sanitize });
+    if (d.status === STATUS.sold || d.status === STATUS.passed) {
+      await upsertClosedFromList(db, [d], "sweep");
+      await applyClosedDetail(db, d);
+    }
+    log.debug({ lot: next.id, status: d.status }, "read an ended lot");
+  } catch (e) {
+    if (
+      e instanceof AbcError &&
+      (e.kind === "parse" || e.status === 404 || e.status === 400)
+    )
+      await db
+        .update(lots)
+        .set({ detailFetchedAt: new Date() })
+        .where(eq(lots.id, next.id));
     throw e;
   }
   return true;

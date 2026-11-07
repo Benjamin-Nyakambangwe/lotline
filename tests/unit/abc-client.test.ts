@@ -176,6 +176,17 @@ describe("AbcClient resilience", () => {
     expect(calls).toHaveLength(5);
   });
 
+  it("treats 'no such lot' (400/404) as a healthy answer: no retry, breaker stays closed", async () => {
+    const { c, calls } = client([{ status: 400, body: { Message: "bad" } }]);
+    for (let i = 0; i < 20; i++)
+      await expect(c.detail(i)).rejects.toMatchObject({
+        kind: "http",
+        status: 400,
+      });
+    expect(calls).toHaveLength(20);
+    expect(c.breaker.state).toBe("closed");
+  });
+
   it("enforces the daily cap except for hot lots", async () => {
     const { c } = client([{ body: fixture("detail-open.json") }], {
       dailyCap: 2,

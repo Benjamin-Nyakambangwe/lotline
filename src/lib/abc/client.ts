@@ -216,6 +216,16 @@ export class AbcClient {
         this.breaker.onSuccess();
         return result.body;
       }
+      if (
+        result.error.kind === "http" &&
+        !result.retryable &&
+        (result.error.status ?? 500) < 500
+      ) {
+        // A clean "no such lot" (ABC answers 400 for unknown IDs): the API is healthy, so this
+        // must not count against the breaker, or a run of missing IDs would stop live polling.
+        this.breaker.onSuccess();
+        throw result.error;
+      }
       this.breaker.onFailure();
       lastErr = result.error;
       if (!result.retryable || attempt > this.o.maxRetries) break;

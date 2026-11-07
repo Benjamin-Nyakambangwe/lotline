@@ -3,13 +3,21 @@
  * concurrency cap, and a priority queue so hot lots are never stuck behind a catalogue sync.
  */
 
-export type Priority = "hot" | "ondemand" | "warm" | "sync" | "enrich";
+export type Priority =
+  | "hot"
+  | "ondemand"
+  | "warm"
+  | "sync"
+  | "enrich"
+  /** the historical backfill: always last, behind everything else */
+  | "history";
 const ORDER: Record<Priority, number> = {
   hot: 0,
   ondemand: 1,
   warm: 2,
   sync: 3,
   enrich: 4,
+  history: 5,
 };
 
 export interface LimiterOptions {
@@ -42,6 +50,7 @@ export class Limiter {
     warm: 0,
     sync: 0,
     enrich: 0,
+    history: 0,
   };
 
   constructor(opts: LimiterOptions) {
