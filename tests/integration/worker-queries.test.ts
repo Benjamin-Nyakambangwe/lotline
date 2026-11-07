@@ -274,3 +274,70 @@ describe("completing market rows from sold-lot detail", () => {
     expect(r.closedAtApprox).toBe(true);
   });
 });
+
+describe("history for every lot", () => {
+  const base: LotListRow = {
+    id: 777001,
+    type: 1,
+    title: "Dell OptiPlex 7060 Micro Desktop",
+    photoUrl: null,
+    thumbUrl: null,
+    lotNumber: 261099001,
+    location: "Harare",
+    currency: "USD",
+    startingBid: 3500,
+    currentBid: 3000,
+    currentBidderId: null,
+    startAt: null,
+    endAt: new Date(Date.now() + 3600_000),
+    status: 1,
+    saleStatus: 1,
+    stc: false,
+    auctionLotId: null,
+  };
+  const snaps = async () =>
+    db
+      .select()
+      .from(schema.lotSnapshots)
+      .where(eq(schema.lotSnapshots.lotId, base.id));
+
+  it("records a snapshot when a lot first appears and whenever its price changes, never otherwise", async () => {
+    await upsertListRows(db, [base], new Set());
+    expect(await snaps()).toHaveLength(1);
+    await upsertListRows(db, [base], new Set());
+    expect(await snaps()).toHaveLength(1);
+    await upsertListRows(
+      db,
+      [{ ...base, currentBid: 3500, startingBid: 4000 }],
+      new Set(),
+    );
+    const s = await snaps();
+    expect(s).toHaveLength(2);
+    expect(s.map((x) => x.currentBid)).toEqual(["30.00", "35.00"]);
+    expect(Object.keys(s[0])).not.toContain("currentBidderId");
+  });
+
+  it("keeps sold lots as full records with their final price and real close time", async () => {
+    const end = (await lot(base.id)).endAt as Date;
+    await upsertListRows(
+      db,
+      [
+        {
+          ...base,
+          status: 2,
+          currentBid: 5000,
+          endAt: new Date("2125-11-04T18:32:58Z"),
+        },
+      ],
+      new Set(),
+    );
+    const l = await lot(base.id);
+    expect(l).toMatchObject({
+      finalState: "final",
+      finalReason: "sold",
+      finalPrice: "50.00",
+    });
+    expect(l.closedAt).toEqual(end);
+    expect(l.endAt).toEqual(end);
+  });
+});

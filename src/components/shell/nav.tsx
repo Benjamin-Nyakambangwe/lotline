@@ -73,10 +73,14 @@ export function isActive(pathname: string, href: string) {
   );
 }
 
-/** Sidebar link with an active state. */
-export function NavLink({ item }: { item: NavItem }) {
-  const pathname = usePathname();
-  const active = isActive(pathname, item.href);
+/** Sidebar link (pure view). */
+export function NavLinkView({
+  item,
+  active,
+}: {
+  item: NavItem;
+  active: boolean;
+}) {
   const Icon = ICONS[item.icon];
   return (
     <Link
@@ -108,10 +112,14 @@ export function NavLink({ item }: { item: NavItem }) {
   );
 }
 
-/** Bottom-tab item for phones. */
-export function TabLink({ item }: { item: NavItem }) {
-  const pathname = usePathname();
-  const active = isActive(pathname, item.href);
+/** Bottom-tab item for phones (pure view). */
+export function TabLinkView({
+  item,
+  active,
+}: {
+  item: NavItem;
+  active: boolean;
+}) {
   const Icon = ICONS[item.icon];
   return (
     <Link
@@ -126,4 +134,38 @@ export function TabLink({ item }: { item: NavItem }) {
       {item.short}
     </Link>
   );
+}
+
+/*
+ * The pathname is request data on dynamic routes (e.g. /lots/[id]), so components that read
+ * it must render inside <Suspense>. Each has a static twin used as the fallback: same links,
+ * no highlight, so the shell still prerenders instantly.
+ */
+
+export function NavLink({ item }: { item: NavItem }) {
+  return (
+    <NavLinkView item={item} active={isActive(usePathname(), item.href)} />
+  );
+}
+
+export function SidebarLinks({ items }: { items: NavItem[] }) {
+  const pathname = usePathname();
+  return items.map((i) => (
+    <NavLinkView key={i.href} item={i} active={isActive(pathname, i.href)} />
+  ));
+}
+
+export function SidebarLinksStatic({ items }: { items: NavItem[] }) {
+  return items.map((i) => <NavLinkView key={i.href} item={i} active={false} />);
+}
+
+export function TabLinks({ items }: { items: NavItem[] }) {
+  const pathname = usePathname();
+  return items.map((i) => (
+    <TabLinkView key={i.href} item={i} active={isActive(pathname, i.href)} />
+  ));
+}
+
+export function TabLinksStatic({ items }: { items: NavItem[] }) {
+  return items.map((i) => <TabLinkView key={i.href} item={i} active={false} />);
 }

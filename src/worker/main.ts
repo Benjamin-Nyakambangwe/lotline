@@ -7,6 +7,7 @@
  *
  * Loops (leader only):
  *  - catalogue   full "Available" sync every 10 min by day, 30 min at night
+ *  - categories  tag every open lot with its category (~12 requests) every hour
  *  - sold        sweep sold lots into market insights every 3 h
  *  - enrich      one lot detail every few seconds until every lot has one
  *  - requests    the web app's on-demand fetches (LISTEN lotline_fetch + 2 s poll)
@@ -21,7 +22,7 @@ import { createDb } from "@/lib/db/client";
 import { workerHeartbeat } from "@/lib/db/schema";
 import { loadConfig } from "./config";
 import { type HealthState, startHealthServer } from "./health";
-import { sweepSold, syncCatalogue } from "./jobs/catalogue";
+import { sweepSold, syncCatalogue, tagCategories } from "./jobs/catalogue";
 import {
   drainFetchRequests,
   enrichOne,
@@ -150,6 +151,15 @@ async function main() {
           );
         },
         errorDelayMs: 2 * MIN,
+      },
+      {
+        name: "categories",
+        initialDelayMs: 45_000,
+        run: async () => {
+          await tagCategories(db, abc, log);
+          return 60 * MIN;
+        },
+        errorDelayMs: 10 * MIN,
       },
       {
         name: "sold",

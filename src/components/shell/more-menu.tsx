@@ -14,13 +14,24 @@ import { ADMIN_NAV, ICONS, isActive, PRIMARY_NAV, SETTINGS_NAV } from "./nav";
 
 /** Phone "More" tab: the destinations that don't fit in the bottom bar. */
 export function MoreMenu({ isAdmin }: { isAdmin: boolean }) {
-  const pathname = usePathname();
+  return <MoreMenuView isAdmin={isAdmin} pathname={usePathname()} />;
+}
+
+/** Pure view; `pathname` null = no highlight (used before the path is known). */
+export function MoreMenuView({
+  isAdmin,
+  pathname,
+}: {
+  isAdmin: boolean;
+  pathname: string | null;
+}) {
   const items = [
     ...PRIMARY_NAV.slice(4),
     SETTINGS_NAV,
     ...(isAdmin ? [ADMIN_NAV] : []),
   ];
-  const active = items.some((i) => isActive(pathname, i.href));
+  const active =
+    pathname !== null && items.some((i) => isActive(pathname, i.href));
   return (
     <DropdownMenu>
       <DropdownMenuTrigger

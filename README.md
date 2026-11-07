@@ -53,6 +53,19 @@ sudo -u postgres psql -d lotline -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 
 All requests share one limiter (≤ 6 concurrent, ≤ 3/s) and a circuit breaker. `ABC_POLLING_ENABLED=false` stops everything. Only one worker polls at a time: a second instance stands by and takes over within seconds (Postgres advisory lock). Health: `GET http://localhost:8081/healthz`.
 
+### Search
+
+Browse and ⌘K search the whole open catalogue in the browser. `/api/catalogue` sends about 2,500 lots once (with an ETag, so later checks are cheap), and `src/lib/search/engine.ts` indexes them with MiniSearch. Every keystroke returns in about 1–3 ms.
+
+- **Typos:** 1 edit allowed from 4 letters, 2 from 7.
+- **Prefix:** the word being typed matches as a prefix.
+- **Words:** synonyms, plurals and accents are handled.
+- **Field weights:** title ≫ category/specs ≫ condition/location.
+- **All words, then any:** every word must match; if nothing does, it falls back to any word.
+- **Lot jumps:** an Id, an ABC lot number or a pasted link goes straight to the lot.
+- **Facet counts:** each facet ignores its own selection, Algolia-style.
+- **Runs:** near-identical lots closing the same day are grouped, and each lot shows its position (#3 of 6). Prices tend to rise toward the end of a run, as people who lost earlier lots move on.
+
 ### Signing in locally
 
 Lotline is invite-only. The account named by `OWNER_EMAIL` in `.env.local` can always sign in and becomes the admin:

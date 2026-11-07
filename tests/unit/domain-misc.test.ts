@@ -23,6 +23,7 @@ describe("time", () => {
     expect(formatCountdown(3_912_000)).toBe("1:05:12");
     expect(formatCountdown(545_000)).toBe("9:05");
     expect(formatCountdown(-5)).toBe("0:00");
+    expect(formatCountdown((4 * 86_400 + 3600 + 5) * 1000)).toBe("4d 1h");
   });
   it("shows clock times in Harare", () => {
     expect(formatClock(new Date("2026-11-06T17:36:40Z"))).toBe("Fri 19:36");

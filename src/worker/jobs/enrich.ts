@@ -96,7 +96,9 @@ async function enrichOneClosed(
   const [id] = await closedNeedingDetail(db, 1);
   if (!id) return false;
   try {
-    await applyClosedDetail(db, await abc.detail(id, 1, "enrich"));
+    const d = await abc.detail(id, 1, "enrich");
+    await upsertDetail(db, d, { tracked: false, sanitize });
+    await applyClosedDetail(db, d);
     log.debug({ lot: id }, "completed market row");
   } catch (e) {
     if (e instanceof AbcError && (e.kind === "parse" || e.status === 404))

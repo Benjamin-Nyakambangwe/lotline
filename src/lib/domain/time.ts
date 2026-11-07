@@ -28,11 +28,13 @@ export function addDaysToDate(ymd: string, days: number): string {
 }
 
 /**
- * Countdown text: "1:05:12" above an hour, "9:05" below, "0:00" at zero.
+ * Countdown text: "4d 1h" beyond a day, "1:05:12" above an hour, "9:05" below, "0:00" at zero.
  * Tabular figures in the UI keep this from jittering as it ticks.
  */
 export function formatCountdown(ms: number): string {
   const s = Math.max(0, Math.floor(ms / 1000));
+  if (s >= 86_400)
+    return `${Math.floor(s / 86_400)}d ${Math.floor((s % 86_400) / 3600)}h`;
   const h = Math.floor(s / 3600);
   const m = Math.floor((s % 3600) / 60);
   const ss = String(s % 60).padStart(2, "0");

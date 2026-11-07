@@ -4,7 +4,7 @@ import type { LotDetailRow, LotListRow } from "../../abc/normalize";
 import { isPlaceholderEnd } from "../../domain/closing";
 import { centsToNumeric } from "../../domain/money";
 import { extractAttrs, normalizeTitle } from "../../domain/titles";
-import { lots, projectCandidates, userLots } from "../schema";
+import { lotSnapshots, lots, projectCandidates, userLots } from "../schema";
 
 // biome-ignore lint/suspicious/noExplicitAny: shared by node-postgres and PGlite Drizzle instances
 type AnyDb = PgDatabase<any, any>;
@@ -50,6 +50,18 @@ function listValues(r: LotListRow, tracked: boolean, now: Date) {
     listSeenAt: now,
     priceObservedAt: now,
     updatedAt: now,
+    ...finalValues(r, now),
+  };
+}
+
+/** Sold (2) and passed (3) lots are final: keep their final price and real close time. */
+function finalValues(r: LotListRow, now: Date) {
+  if (r.status !== 2 && r.status !== 3) return {};
+  return {
+    finalState: "final" as const,
+    finalReason: r.status === 2 ? ("sold" as const) : ("passed" as const),
+    finalPrice: r.status === 2 ? centsToNumeric(r.currentBid) : null,
+    closedAt: realEnd(r.endAt, now),
   };
 }
 
@@ -74,6 +86,10 @@ const listConflictSet = {
   endAt: sql`case when excluded.end_at is null then ${lots.endAt} else greatest(${lots.endAt}, excluded.end_at) end`,
   originalEndAt: sql`coalesce(${lots.originalEndAt}, excluded.original_end_at)`,
   extensionsCount: sql`${lots.extensionsCount} + case when ${lots.endAt} is not null and excluded.end_at > ${lots.endAt} then 1 else 0 end`,
+  finalState: sql`case when excluded.status in (2, 3) then 'final' else ${lots.finalState} end`,
+  finalReason: sql`case when excluded.status = 2 then 'sold' when excluded.status = 3 then 'passed' else ${lots.finalReason} end`,
+  finalPrice: sql`case when excluded.status = 2 then excluded.current_bid else ${lots.finalPrice} end`,
+  closedAt: sql`case when excluded.status in (2, 3) then coalesce(${lots.closedAt}, ${lots.endAt}, excluded.end_at) else ${lots.closedAt} end`,
   listSeenAt: sql`excluded.list_seen_at`,
   priceObservedAt: sql`excluded.price_observed_at`,
   updatedAt: sql`excluded.updated_at`,
@@ -90,6 +106,7 @@ export async function upsertListRows(
   for (let i = 0; i < rows.length; i += 250) {
     const batch = dedupe(rows.slice(i, i + 250));
     if (!batch.length) continue;
+    const changed = await changedLots(db, batch, now);
     await db
       .insert(lots)
       .values(
@@ -99,9 +116,63 @@ export async function upsertListRows(
         })),
       )
       .onConflictDoUpdate({ target: lots.id, set: listConflictSet });
+    await recordSnapshots(
+      db,
+      batch.filter((r) => changed.has(r.id)),
+      "search",
+      now,
+    );
     n += batch.length;
   }
   return n;
+}
+
+const valuesList = (rows: LotListRow[], now: Date) =>
+  sql.join(
+    rows.map(
+      (r) =>
+        sql`(${r.id}::int, ${centsToNumeric(r.currentBid)}::numeric, ${centsToNumeric(r.startingBid)}::numeric, ${realEnd(r.endAt, now)}::timestamptz)`,
+    ),
+    sql`, `,
+  );
+
+/** Lots that are new, or whose bid, next bid or end time changed since we last stored them. */
+async function changedLots(
+  db: AnyDb,
+  rows: LotListRow[],
+  now: Date,
+): Promise<Set<number>> {
+  const res = await db.execute<{ id: number }>(sql`
+    select v.id from (values ${valuesList(rows, now)}) as v(id, cur, next, end_at)
+    left join lots l on l.id = v.id
+    where l.id is null
+       or l.current_bid is distinct from v.cur
+       or l.starting_bid is distinct from v.next
+       or (v.end_at is not null and (l.end_at is null or v.end_at > l.end_at))`);
+  return new Set((res.rows as { id: number }[]).map((r) => Number(r.id)));
+}
+
+/**
+ * Price history for every lot, not just tracked ones: one row per change. This can't be
+ * backfilled later, so it's recorded from the first sync. Never contains bidder IDs.
+ */
+export async function recordSnapshots(
+  db: AnyDb,
+  rows: LotListRow[],
+  source: "search" | "detail",
+  now = new Date(),
+) {
+  if (!rows.length) return;
+  await db.insert(lotSnapshots).values(
+    rows.map((r) => ({
+      lotId: r.id,
+      observedAt: now,
+      currentBid: centsToNumeric(r.currentBid),
+      startingBid: centsToNumeric(r.startingBid),
+      endAt: realEnd(r.endAt, now),
+      source,
+    })),
+  );
 }
 
 /** A page can repeat a lot; Postgres refuses to update the same row twice in one statement. */
@@ -200,4 +271,20 @@ export async function lotsNeedingDetail(
     .sort((a, b) => Number(tracked.has(b.id)) - Number(tracked.has(a.id)))
     .slice(0, limit)
     .map((r) => ({ id: r.id, type: r.type }));
+}
+
+/** Tag lots with their top-level category (from a category-filtered search, no detail needed). */
+export async function tagCategory(db: AnyDb, ids: number[], category: string) {
+  if (!ids.length) return 0;
+  const res = await db
+    .update(lots)
+    .set({ category })
+    .where(
+      and(
+        inArray(lots.id, ids),
+        sql`${lots.category} is distinct from ${category}`,
+      ),
+    )
+    .returning({ id: lots.id });
+  return res.length;
 }

@@ -6,7 +6,11 @@ import {
   enrichClosedFromLots,
   upsertClosedFromList,
 } from "@/lib/db/queries/closed";
-import { trackedLotIds, upsertListRows } from "@/lib/db/queries/lots";
+import {
+  tagCategory,
+  trackedLotIds,
+  upsertListRows,
+} from "@/lib/db/queries/lots";
 import { syncRuns } from "@/lib/db/schema";
 import { STATUS } from "@/lib/domain/closing";
 import type { Logger } from "../log";
@@ -99,11 +103,14 @@ export async function sweepSold(db: Db, abc: AbcClient, log: Logger) {
       )
     ).rows;
     const confidence = n === 0 ? "backfill" : "sweep";
+    const tracked = await trackedLotIds(db);
     for await (const page of abc.searchAll(
       { size: 500, facets: { sale_status: ["Sold"] } },
       { maxPages: 20, priority: "sync" },
     )) {
       rec.pages++;
+      // Keep a full lot record for every past lot too (for deep analysis), plus the market row.
+      await upsertListRows(db, page.items, tracked);
       rec.upserts += await upsertClosedFromList(db, page.items, confidence);
     }
     await enrichClosedFromLots(db);
@@ -118,4 +125,38 @@ export async function sweepSold(db: Db, abc: AbcClient, log: Logger) {
     );
     return rec;
   });
+}
+
+/**
+ * Tag every open lot with its top-level category using category-filtered searches. ABC has
+ * exactly 10 top-level categories, so this is ~12 requests and makes the Browse category
+ * filter complete without waiting for per-lot detail fetches.
+ */
+export async function tagCategories(db: Db, abc: AbcClient, log: Logger) {
+  const started = Date.now();
+  const meta = await abc.search(
+    { size: 1, facets: { sale_status: ["Available"] } },
+    "sync",
+  );
+  const buckets = meta.facets.find((f) => f.Name === "category")?.Buckets ?? [];
+  let tagged = 0;
+  let requests = 1;
+  for (const b of buckets) {
+    const ids: number[] = [];
+    for await (const page of abc.searchAll(
+      {
+        size: 500,
+        facets: { sale_status: ["Available"], category: [b.Value] },
+      },
+      { maxPages: 10, priority: "sync" },
+    )) {
+      requests++;
+      ids.push(...page.items.map((x) => x.id));
+    }
+    tagged += await tagCategory(db, ids, b.Value);
+  }
+  log.info(
+    { categories: buckets.length, tagged, requests, ms: Date.now() - started },
+    "categories tagged",
+  );
 }
