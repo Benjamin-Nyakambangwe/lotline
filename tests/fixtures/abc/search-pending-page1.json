@@ -1,0 +1,420 @@
+{
+  "List": [
+    {
+      "Id": 20695,
+      "Type": 2,
+      "Title": "Toyota Granvia 2.7L Minibus",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/f7ac09d9-8d44-4c5d-b26e-b502ca728553/f7ac09d9-8d44-4c5d-b26e-b502ca728553-Zoom.jpg",
+      "LotNumber": 260402075,
+      "Location": "Plumtree ",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": null,
+      "CurrentBid": null,
+      "CurrentBidderId": null,
+      "StartDate": null,
+      "EndDate": "2125-07-17T19:26:15.000Z",
+      "Price": null,
+      "Status": 0,
+      "STC": false,
+      "SaleStatus": 0,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": null
+    },
+    {
+      "Id": 19370,
+      "Type": 2,
+      "Title": "Volvo HYP10-16 Horse",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/53115337-0070-46ce-80a6-b59db01d51c5/53115337-0070-46ce-80a6-b59db01d51c5-Zoom.jpg",
+      "LotNumber": 260104281,
+      "Location": "Plumtree ",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": null,
+      "CurrentBid": null,
+      "CurrentBidderId": null,
+      "StartDate": null,
+      "EndDate": "2125-07-17T19:44:15.000Z",
+      "Price": null,
+      "Status": 0,
+      "STC": false,
+      "SaleStatus": 0,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": null
+    },
+    {
+      "Id": 19325,
+      "Type": 2,
+      "Title": "Homemade Single Axle Trailer",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/b48e4302-b5bb-4938-80b0-c9066cf7a379/b48e4302-b5bb-4938-80b0-c9066cf7a379-Zoom.jpg",
+      "LotNumber": 260103749,
+      "Location": "Plumtree ",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": null,
+      "CurrentBid": null,
+      "CurrentBidderId": null,
+      "StartDate": null,
+      "EndDate": "2125-07-17T19:49:15.000Z",
+      "Price": null,
+      "Status": 0,
+      "STC": false,
+      "SaleStatus": 0,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": null
+    },
+    {
+      "Id": 19349,
+      "Type": 2,
+      "Title": "Homemade Single Axle Luggage Trailer",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/f8e147d8-c124-4ee3-b8fb-f89b1d621eba/f8e147d8-c124-4ee3-b8fb-f89b1d621eba-Zoom.jpg",
+      "LotNumber": 260103899,
+      "Location": "Plumtree ",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": null,
+      "CurrentBid": null,
+      "CurrentBidderId": null,
+      "StartDate": null,
+      "EndDate": "2125-07-17T19:58:15.000Z",
+      "Price": null,
+      "Status": 0,
+      "STC": false,
+      "SaleStatus": 0,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": null
+    },
+    {
+      "Id": 19357,
+      "Type": 2,
+      "Title": "BMW 5 Series 520 Sedan",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/07e19da5-d410-4bf3-932c-0f58fb9bf64b/07e19da5-d410-4bf3-932c-0f58fb9bf64b-Zoom.jpg",
+      "LotNumber": 260104083,
+      "Location": "Plumtree ",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": null,
+      "CurrentBid": null,
+      "CurrentBidderId": null,
+      "StartDate": null,
+      "EndDate": "2125-07-17T19:59:15.000Z",
+      "Price": null,
+      "Status": 0,
+      "STC": false,
+      "SaleStatus": 0,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": null
+    },
+    {
+      "Id": 19347,
+      "Type": 2,
+      "Title": "Homemade Single Axle Luggage Trailer",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/c1f19b9b-acac-4ffa-90eb-5fbdcd88dce1/c1f19b9b-acac-4ffa-90eb-5fbdcd88dce1-Zoom.jpg",
+      "LotNumber": 260103896,
+      "Location": "Plumtree ",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": null,
+      "CurrentBid": null,
+      "CurrentBidderId": null,
+      "StartDate": null,
+      "EndDate": "2125-07-17T20:01:16.000Z",
+      "Price": null,
+      "Status": 0,
+      "STC": false,
+      "SaleStatus": 0,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": null
+    }
+  ],
+  "Meta": {
+    "Count": 37,
+    "Facets": [
+      {
+        "Name": "sale_status",
+        "Buckets": [
+          {
+            "Value": "Pending",
+            "Count": 37,
+            "Checked": true
+          }
+        ],
+        "Title": "Status"
+      },
+      {
+        "Name": "location",
+        "Buckets": [
+          {
+            "Value": "Beitbridge",
+            "Count": 13,
+            "Checked": false
+          },
+          {
+            "Value": "Plumtree ",
+            "Count": 10,
+            "Checked": false
+          },
+          {
+            "Value": "Harare",
+            "Count": 8,
+            "Checked": false
+          },
+          {
+            "Value": "Bulawayo",
+            "Count": 5,
+            "Checked": false
+          },
+          {
+            "Value": "Kazungula",
+            "Count": 1,
+            "Checked": false
+          }
+        ],
+        "Title": "Location"
+      },
+      {
+        "Name": "make",
+        "Buckets": [
+          {
+            "Value": "Homemade",
+            "Count": 4,
+            "Checked": false
+          },
+          {
+            "Value": "Nissan",
+            "Count": 4,
+            "Checked": false
+          },
+          {
+            "Value": "Renault",
+            "Count": 4,
+            "Checked": false
+          },
+          {
+            "Value": "Toyota",
+            "Count": 4,
+            "Checked": false
+          },
+          {
+            "Value": "Unspecified",
+            "Count": 3,
+            "Checked": false
+          },
+          {
+            "Value": "Honda",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "MAN",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "Mercedes-Benz",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "Audi",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "BMW",
+            "Count": 1,
+            "Checked": false
+          }
+        ],
+        "Title": "Make"
+      },
+      {
+        "Name": "year",
+        "Buckets": [
+          {
+            "Value": "2012",
+            "Count": 5,
+            "Checked": false
+          },
+          {
+            "Value": "2013",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "1989",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "1999",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "2001",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "2002",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "2007",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "2011",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "2017",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "2018",
+            "Count": 1,
+            "Checked": false
+          }
+        ],
+        "Title": "Year"
+      },
+      {
+        "Name": "sub_category",
+        "Buckets": [
+          {
+            "Value": "Motor Vehicles",
+            "Count": 30,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicles",
+            "Count": 30,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicle Parts & Accessories",
+            "Count": 7,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicle Storage & Cargo",
+            "Count": 7,
+            "Checked": false
+          }
+        ],
+        "Title": "Subcategory"
+      },
+      {
+        "Name": "final_category",
+        "Buckets": [
+          {
+            "Value": "Cars, Trucks & Vans",
+            "Count": 28,
+            "Checked": false
+          },
+          {
+            "Value": "Motor Vehicle Trailers",
+            "Count": 7,
+            "Checked": false
+          },
+          {
+            "Value": "Motorcycles & Scooters",
+            "Count": 2,
+            "Checked": false
+          }
+        ],
+        "Title": "Specific Category"
+      },
+      {
+        "Name": "condition",
+        "Buckets": [
+          {
+            "Value": "Non-runner",
+            "Count": 15,
+            "Checked": false
+          },
+          {
+            "Value": "Runner",
+            "Count": 8,
+            "Checked": false
+          },
+          {
+            "Value": "Accident Damaged",
+            "Count": 4,
+            "Checked": false
+          }
+        ],
+        "Title": "Condition"
+      },
+      {
+        "Name": "campaign",
+        "Buckets": [
+          {
+            "Value": "Zimra Disposal Auction - Beitbridge - ZDA#021",
+            "Count": 13,
+            "Checked": false
+          },
+          {
+            "Value": "Zimra Disposal Auction - Plumtree, Maitengwe & Mphoengs  - ZDA#014",
+            "Count": 10,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicles Auction - CVA#039",
+            "Count": 3,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicles Auction - CVA#043",
+            "Count": 3,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicles Auction - CVA#036",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicles Auction - CVA#042",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicles Auction - CVA#026",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicles Auction - CVA#033",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicles Auction - CVA#034",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "Zimra Disposal Auction - Victoria Falls & Kazungula - ZDA#018",
+            "Count": 1,
+            "Checked": false
+          }
+        ],
+        "Title": "Campaign"
+      }
+    ],
+    "Cursor": "VaVzcnAcQW9KNHc3Q0YrZmdJS1RNdU1pNHlNakUxT0E9PRQ"
+  }
+}

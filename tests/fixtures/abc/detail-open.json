@@ -1,0 +1,156 @@
+{
+  "cat": "Toys & Games",
+  "Id": 800829,
+  "Type": 1,
+  "Title": "Sunglasses and wrist Watch",
+  "Photo": "https://cdn-s3.abcauctions.co.zw/9ccd5960-a1c2-4ae1-81ab-285c7541880e/9ccd5960-a1c2-4ae1-81ab-285c7541880e-Zoom.jpg",
+  "LotNumber": 261014363,
+  "AuctionLotId": 960301,
+  "CurrentBidderId": null,
+  "Category": "Toys & Games",
+  "Gallery": [
+    {
+      "Id": 7535759,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/9ccd5960-a1c2-4ae1-81ab-285c7541880e/9ccd5960-a1c2-4ae1-81ab-285c7541880e-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/9ccd5960-a1c2-4ae1-81ab-285c7541880e/9ccd5960-a1c2-4ae1-81ab-285c7541880e-Zoom.jpg"
+    },
+    {
+      "Id": 7535765,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/dc23f27f-bdb2-4614-953e-340ed7d256c0/dc23f27f-bdb2-4614-953e-340ed7d256c0-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/dc23f27f-bdb2-4614-953e-340ed7d256c0/dc23f27f-bdb2-4614-953e-340ed7d256c0-Zoom.jpg"
+    },
+    {
+      "Id": 7535767,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/29e55a7a-2f63-4272-88a7-d00bb962b8a6/29e55a7a-2f63-4272-88a7-d00bb962b8a6-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/29e55a7a-2f63-4272-88a7-d00bb962b8a6/29e55a7a-2f63-4272-88a7-d00bb962b8a6-Zoom.jpg"
+    },
+    {
+      "Id": 7535766,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/a02b7881-3ec5-4b16-b8b3-eee723d8e36e/a02b7881-3ec5-4b16-b8b3-eee723d8e36e-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/a02b7881-3ec5-4b16-b8b3-eee723d8e36e/a02b7881-3ec5-4b16-b8b3-eee723d8e36e-Zoom.jpg"
+    },
+    {
+      "Id": 7535764,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/f28b3b47-c1ba-410b-ad4c-67d781d9afb2/f28b3b47-c1ba-410b-ad4c-67d781d9afb2-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/f28b3b47-c1ba-410b-ad4c-67d781d9afb2/f28b3b47-c1ba-410b-ad4c-67d781d9afb2-Zoom.jpg"
+    },
+    {
+      "Id": 7535763,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/cec24173-4882-47a9-b10f-6cb3a2d8f864/cec24173-4882-47a9-b10f-6cb3a2d8f864-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/cec24173-4882-47a9-b10f-6cb3a2d8f864/cec24173-4882-47a9-b10f-6cb3a2d8f864-Zoom.jpg"
+    },
+    {
+      "Id": 7535761,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/3f1b0037-160b-475c-9109-bde0a9ad9ce7/3f1b0037-160b-475c-9109-bde0a9ad9ce7-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/3f1b0037-160b-475c-9109-bde0a9ad9ce7/3f1b0037-160b-475c-9109-bde0a9ad9ce7-Zoom.jpg"
+    },
+    {
+      "Id": 7535762,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/9d6d8de5-8c78-4c9e-9c32-b958a8f8b214/9d6d8de5-8c78-4c9e-9c32-b958a8f8b214-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/9d6d8de5-8c78-4c9e-9c32-b958a8f8b214/9d6d8de5-8c78-4c9e-9c32-b958a8f8b214-Zoom.jpg"
+    }
+  ],
+  "Location": "Bulawayo",
+  "Sublocation": "ABC Auctions, 77 Plumtree Road, Donnington, Bulawayo",
+  "Size": "Approx. 60mm (Sunglasses width)",
+  "Quantity": "2 items",
+  "Condition": "As Is",
+  "State": "New",
+  "OtherInformation": "Set includes tortoiseshell patterned sunglasses with UV protection and a light blue wristwatch.",
+  "Currency": "USD",
+  "Price": null,
+  "PriceExclFees": null,
+  "Destinations": [
+    {
+      "Id": 0,
+      "Title": "No delivery",
+      "Currency": null,
+      "Price": 0,
+      "Tax": 0
+    },
+    {
+      "Id": 15558,
+      "Title": "Bulawayo",
+      "Currency": "USD",
+      "Price": 1,
+      "Tax": 0.155
+    },
+    {
+      "Id": 17245,
+      "Title": "Chegutu",
+      "Currency": "USD",
+      "Price": 2,
+      "Tax": 0.155
+    },
+    {
+      "Id": 17390,
+      "Title": "Chitungwiza",
+      "Currency": "USD",
+      "Price": 4,
+      "Tax": 0.155
+    },
+    {
+      "Id": 17248,
+      "Title": "Gweru",
+      "Currency": "USD",
+      "Price": 2,
+      "Tax": 0.155
+    },
+    {
+      "Id": 15557,
+      "Title": "Harare",
+      "Currency": "USD",
+      "Price": 3,
+      "Tax": 0.155
+    },
+    {
+      "Id": 17246,
+      "Title": "Kadoma",
+      "Currency": "USD",
+      "Price": 2,
+      "Tax": 0.155
+    },
+    {
+      "Id": 17247,
+      "Title": "Kwekwe",
+      "Currency": "USD",
+      "Price": 2,
+      "Tax": 0.155
+    },
+    {
+      "Id": 17244,
+      "Title": "Norton",
+      "Currency": "USD",
+      "Price": 3,
+      "Tax": 0.155
+    },
+    {
+      "Id": 17389,
+      "Title": "Ruwa",
+      "Currency": "USD",
+      "Price": 4,
+      "Tax": 0.155
+    }
+  ],
+  "StartDate": "2026-11-03T10:30:00.000Z",
+  "EndDate": "2026-11-07T17:09:20.000Z",
+  "OfferWindowEndDate": "2026-11-08T13:09:20.000Z",
+  "CurrentBid": null,
+  "StartingBid": 3,
+  "EstimatedValue": null,
+  "PurchasersLevy": 0.175,
+  "LotVAT": 0,
+  "VAT": 0.155,
+  "SaleStatus": 1,
+  "Status": 1,
+  "STC": false,
+  "Watching": false,
+  "HighestBidder": false,
+  "MaxBid": null,
+  "Url": "https://app.abcauctions.co.zw/lot/1/800829",
+  "ViewingDetails": {
+    "Title": "ABC Auctions, 77 Plumtree Road, Donnington, Bulawayo",
+    "Subtitle": "Goods Warehouse",
+    "Description": "<p>Viewing currently available at the below times.<br><i>• 09:00-15:00 Monday-Friday</i><br><i>• 09:00-12:00 Saturday</i><br><strong>Viewing is important and encouraged to avoid disappointment.</strong><br>NB: Times may change without notice and we recommend checking this information immediately prior to viewing.</p><p>Payment due within 2 days of winning<br>Collection due within 2 days of paying</p><p>Delivery available</p>"
+  }
+}

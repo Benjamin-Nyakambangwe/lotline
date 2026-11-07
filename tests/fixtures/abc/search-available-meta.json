@@ -1,0 +1,467 @@
+{
+  "List": [
+    {
+      "Id": 800604,
+      "Type": 1,
+      "Title": "Four Piece Deep Red Upholstered Lounge Suite",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/a3952521-3fc4-40d3-81a2-ffd89bb0ae2a/a3952521-3fc4-40d3-81a2-ffd89bb0ae2a-Zoom.jpg",
+      "LotNumber": 261014132,
+      "Location": "Harare",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 30,
+      "CurrentBid": null,
+      "CurrentBidderId": null,
+      "StartDate": "2026-11-03T10:30:00.000Z",
+      "EndDate": "2026-11-06T17:00:00.000Z",
+      "Price": null,
+      "Status": 3,
+      "STC": false,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 959578
+    }
+  ],
+  "Meta": {
+    "Count": 2224,
+    "Facets": [
+      {
+        "Name": "sale_status",
+        "Buckets": [
+          {
+            "Value": "Available",
+            "Count": 2224,
+            "Checked": true
+          }
+        ],
+        "Title": "Status"
+      },
+      {
+        "Name": "lot_type",
+        "Buckets": [
+          {
+            "Value": "Goods",
+            "Count": 2162,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicle",
+            "Count": 62,
+            "Checked": false
+          }
+        ],
+        "Title": "Lot Type"
+      },
+      {
+        "Name": "location",
+        "Buckets": [
+          {
+            "Value": "Harare",
+            "Count": 1494,
+            "Checked": false
+          },
+          {
+            "Value": "Bulawayo",
+            "Count": 730,
+            "Checked": false
+          }
+        ],
+        "Title": "Location"
+      },
+      {
+        "Name": "make",
+        "Buckets": [
+          {
+            "Value": "ABC",
+            "Count": 457,
+            "Checked": false
+          },
+          {
+            "Value": "Toyota",
+            "Count": 120,
+            "Checked": false
+          },
+          {
+            "Value": "Unknown",
+            "Count": 75,
+            "Checked": false
+          },
+          {
+            "Value": "Isuzu",
+            "Count": 41,
+            "Checked": false
+          },
+          {
+            "Value": "Nissan",
+            "Count": 40,
+            "Checked": false
+          },
+          {
+            "Value": "Jadever",
+            "Count": 33,
+            "Checked": false
+          },
+          {
+            "Value": "Motorcraft",
+            "Count": 26,
+            "Checked": false
+          },
+          {
+            "Value": "RAF",
+            "Count": 23,
+            "Checked": false
+          },
+          {
+            "Value": "Mitsubishi Motors",
+            "Count": 16,
+            "Checked": false
+          },
+          {
+            "Value": "Unspecified",
+            "Count": 16,
+            "Checked": false
+          }
+        ],
+        "Title": "Make"
+      },
+      {
+        "Name": "year",
+        "Buckets": [
+          {
+            "Value": "2016",
+            "Count": 7,
+            "Checked": false
+          },
+          {
+            "Value": "2015",
+            "Count": 5,
+            "Checked": false
+          },
+          {
+            "Value": "2013",
+            "Count": 4,
+            "Checked": false
+          },
+          {
+            "Value": "2014",
+            "Count": 4,
+            "Checked": false
+          },
+          {
+            "Value": "2004",
+            "Count": 3,
+            "Checked": false
+          },
+          {
+            "Value": "2006",
+            "Count": 3,
+            "Checked": false
+          },
+          {
+            "Value": "1998",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "2001",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "2002",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "2009",
+            "Count": 2,
+            "Checked": false
+          }
+        ],
+        "Title": "Year"
+      },
+      {
+        "Name": "category",
+        "Buckets": [
+          {
+            "Value": "Hardware",
+            "Count": 523,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicles & Parts",
+            "Count": 456,
+            "Checked": false
+          },
+          {
+            "Value": "Home & Garden",
+            "Count": 417,
+            "Checked": false
+          },
+          {
+            "Value": "Furniture",
+            "Count": 255,
+            "Checked": false
+          },
+          {
+            "Value": "Electronics",
+            "Count": 232,
+            "Checked": false
+          },
+          {
+            "Value": "Toys & Games",
+            "Count": 85,
+            "Checked": false
+          },
+          {
+            "Value": "Sporting Goods",
+            "Count": 65,
+            "Checked": false
+          },
+          {
+            "Value": "Business & Industrial",
+            "Count": 64,
+            "Checked": false
+          },
+          {
+            "Value": "Health & Beauty",
+            "Count": 30,
+            "Checked": false
+          },
+          {
+            "Value": "Luggage & Bags",
+            "Count": 22,
+            "Checked": false
+          }
+        ],
+        "Title": "Category"
+      },
+      {
+        "Name": "sub_category",
+        "Buckets": [
+          {
+            "Value": "Vehicle Parts & Accessories",
+            "Count": 394,
+            "Checked": false
+          },
+          {
+            "Value": "Motor Vehicle Parts",
+            "Count": 347,
+            "Checked": false
+          },
+          {
+            "Value": "Tools",
+            "Count": 187,
+            "Checked": false
+          },
+          {
+            "Value": "Kitchen & Dining",
+            "Count": 118,
+            "Checked": false
+          },
+          {
+            "Value": "Power & Electrical Supplies",
+            "Count": 88,
+            "Checked": false
+          },
+          {
+            "Value": "Lawn & Garden",
+            "Count": 77,
+            "Checked": false
+          },
+          {
+            "Value": "Audio",
+            "Count": 63,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicles",
+            "Count": 58,
+            "Checked": false
+          },
+          {
+            "Value": "Cabinets & Storage",
+            "Count": 53,
+            "Checked": false
+          },
+          {
+            "Value": "Motor Vehicles",
+            "Count": 52,
+            "Checked": false
+          }
+        ],
+        "Title": "Subcategory"
+      },
+      {
+        "Name": "final_category",
+        "Buckets": [
+          {
+            "Value": "Motor Vehicle Engine Oil Circulation",
+            "Count": 109,
+            "Checked": false
+          },
+          {
+            "Value": "Cars, Trucks & Vans",
+            "Count": 49,
+            "Checked": false
+          },
+          {
+            "Value": "Motor Vehicle Fuel Systems",
+            "Count": 47,
+            "Checked": false
+          },
+          {
+            "Value": "Motor Vehicle Braking",
+            "Count": 37,
+            "Checked": false
+          },
+          {
+            "Value": "Motor Vehicle Engine Parts",
+            "Count": 35,
+            "Checked": false
+          },
+          {
+            "Value": "Storage Cabinets & Lockers",
+            "Count": 30,
+            "Checked": false
+          },
+          {
+            "Value": "Hand Tool Sets",
+            "Count": 27,
+            "Checked": false
+          },
+          {
+            "Value": "Household Appliances",
+            "Count": 27,
+            "Checked": false
+          },
+          {
+            "Value": "Electrical Wires & Cable",
+            "Count": 25,
+            "Checked": false
+          },
+          {
+            "Value": "Flood & Spot Lights",
+            "Count": 23,
+            "Checked": false
+          }
+        ],
+        "Title": "Specific Category"
+      },
+      {
+        "Name": "condition",
+        "Buckets": [
+          {
+            "Value": "As Is",
+            "Count": 1726,
+            "Checked": false
+          },
+          {
+            "Value": "Sealed Packaging",
+            "Count": 211,
+            "Checked": false
+          },
+          {
+            "Value": "Working",
+            "Count": 83,
+            "Checked": false
+          },
+          {
+            "Value": "Untested",
+            "Count": 54,
+            "Checked": false
+          },
+          {
+            "Value": "Runner",
+            "Count": 42,
+            "Checked": false
+          },
+          {
+            "Value": "Damaged",
+            "Count": 37,
+            "Checked": false
+          },
+          {
+            "Value": "Partly Working",
+            "Count": 30,
+            "Checked": false
+          },
+          {
+            "Value": "Not Working",
+            "Count": 19,
+            "Checked": false
+          },
+          {
+            "Value": "Non-runner",
+            "Count": 11,
+            "Checked": false
+          },
+          {
+            "Value": "Accident Damaged",
+            "Count": 8,
+            "Checked": false
+          }
+        ],
+        "Title": "Condition"
+      },
+      {
+        "Name": "campaign",
+        "Buckets": [
+          {
+            "Value": "Vehicles Spares & Auto Parts  Auction - TVS#011",
+            "Count": 215,
+            "Checked": false
+          },
+          {
+            "Value": "Harare Goods Auction - HGA#288",
+            "Count": 210,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicle Spares Auction - HYS#212",
+            "Count": 201,
+            "Checked": false
+          },
+          {
+            "Value": "Harare Goods Auction - HGA#285",
+            "Count": 200,
+            "Checked": false
+          },
+          {
+            "Value": "Harare Goods Auction - HGA#286",
+            "Count": 200,
+            "Checked": false
+          },
+          {
+            "Value": "Harare Goods Auction - HGA#287",
+            "Count": 200,
+            "Checked": false
+          },
+          {
+            "Value": "BYO Goods Auction - BGA#239",
+            "Count": 197,
+            "Checked": false
+          },
+          {
+            "Value": "Bulawayo Goods Auction - BGA#240",
+            "Count": 180,
+            "Checked": false
+          },
+          {
+            "Value": "Bulawayo Goods Auction - BGA#237",
+            "Count": 139,
+            "Checked": false
+          },
+          {
+            "Value": "BYO Vehicle Spares Auction - BGA#234",
+            "Count": 108,
+            "Checked": false
+          }
+        ],
+        "Title": "Campaign"
+      }
+    ],
+    "Cursor": "VeEl0eocQW9Kd3FMSHoyS0VES2pNdU1TNDRNREEyTURRPQE"
+  }
+}

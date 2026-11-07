@@ -35,5 +35,26 @@
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["src/app/**", "src/components/**", "src/server/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "@/lib/abc/client": "Only the worker talks to ABC (see docs/adr). Read lots from Postgres, or enqueue a fetch_requests row.",
+                  "@/lib/abc/limiter": "Only the worker talks to ABC (see docs/adr). Read lots from Postgres, or enqueue a fetch_requests row.",
+                  "@/lib/abc/breaker": "Only the worker talks to ABC (see docs/adr). Read lots from Postgres, or enqueue a fetch_requests row."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

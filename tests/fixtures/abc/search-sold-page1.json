@@ -1,0 +1,709 @@
+{
+  "List": [
+    {
+      "Id": 680519,
+      "Type": 1,
+      "Title": "Modern Grey Office Chair with Armrests",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/0012797f-5042-49b4-8552-6336e260560f/0012797f-5042-49b4-8552-6336e260560f-Zoom.jpg",
+      "LotNumber": 260201602,
+      "Location": "Harare",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 5,
+      "CurrentBid": 20,
+      "CurrentBidderId": 900000027,
+      "StartDate": "2026-02-15T10:30:00.000Z",
+      "EndDate": "2125-02-24T09:20:58.000Z",
+      "Price": null,
+      "Status": 2,
+      "STC": false,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 820929
+    },
+    {
+      "Id": 21930,
+      "Type": 2,
+      "Title": "1997 Honda CR-V 2.0 L SUV",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/0142e499-586e-41b9-8672-537b7f760782/0142e499-586e-41b9-8672-537b7f760782-Zoom.jpg",
+      "LotNumber": 260700383,
+      "Location": "Harare",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 250,
+      "CurrentBid": 600,
+      "CurrentBidderId": 900000028,
+      "StartDate": "2026-10-02T10:30:00.000Z",
+      "EndDate": "2125-10-08T18:32:18.000Z",
+      "Price": null,
+      "Status": 2,
+      "STC": true,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 942133
+    },
+    {
+      "Id": 21145,
+      "Type": 2,
+      "Title": "2012 MAN Horse",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/5c40a8a5-227f-4817-a578-3e4a7b6b041f/5c40a8a5-227f-4817-a578-3e4a7b6b041f-Zoom.jpg",
+      "LotNumber": 260504902,
+      "Location": "Harare",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 650,
+      "CurrentBid": 650,
+      "CurrentBidderId": 900000028,
+      "StartDate": "2026-10-02T10:30:00.000Z",
+      "EndDate": "2125-10-08T18:45:18.000Z",
+      "Price": null,
+      "Status": 2,
+      "STC": true,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 942137
+    },
+    {
+      "Id": 21923,
+      "Type": 2,
+      "Title": "2014 Renault Captur Hatchback",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/c16e425b-bea6-44b4-9462-3fff436d688b/c16e425b-bea6-44b4-9462-3fff436d688b-Zoom.jpg",
+      "LotNumber": 260700356,
+      "Location": "Harare",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 1500,
+      "CurrentBid": 3900,
+      "CurrentBidderId": 900000028,
+      "StartDate": "2026-10-02T10:30:00.000Z",
+      "EndDate": "2125-10-08T18:46:16.000Z",
+      "Price": null,
+      "Status": 2,
+      "STC": true,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 942132
+    },
+    {
+      "Id": 20775,
+      "Type": 2,
+      "Title": "2024 Tata 2518.T Rigid Truck",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/be7cc91d-4c75-40bf-9680-76af2f7135ef/be7cc91d-4c75-40bf-9680-76af2f7135ef-Zoom.jpg",
+      "LotNumber": 260404609,
+      "Location": "Harare",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 750,
+      "CurrentBid": 3000,
+      "CurrentBidderId": 900000029,
+      "StartDate": "2026-10-02T10:30:00.000Z",
+      "EndDate": "2125-10-08T18:58:17.000Z",
+      "Price": null,
+      "Status": 2,
+      "STC": true,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 942199
+    },
+    {
+      "Id": 21935,
+      "Type": 2,
+      "Title": "2021 Mitsubishi Fuso Canter FE6-130 Rigid Truck",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/9776b4e7-011c-47cc-969a-faedb5d4cfe3/9776b4e7-011c-47cc-969a-faedb5d4cfe3-Zoom.jpg",
+      "LotNumber": 260700389,
+      "Location": "Harare",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 2500,
+      "CurrentBid": 5900,
+      "CurrentBidderId": 900000028,
+      "StartDate": "2026-10-02T10:30:00.000Z",
+      "EndDate": "2125-10-08T19:03:16.000Z",
+      "Price": null,
+      "Status": 2,
+      "STC": true,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 942135
+    },
+    {
+      "Id": 22472,
+      "Type": 2,
+      "Title": "2007 Mazda T3500 Dropside Rigid Truck",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/e84d54ce-f16c-4b90-a226-19de34563814/e84d54ce-f16c-4b90-a226-19de34563814-Zoom.jpg",
+      "LotNumber": 260806199,
+      "Location": "Harare",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 1900,
+      "CurrentBid": 4900,
+      "CurrentBidderId": 900000030,
+      "StartDate": "2026-10-09T10:30:00.000Z",
+      "EndDate": "2125-10-15T20:16:14.000Z",
+      "Price": null,
+      "Status": 2,
+      "STC": true,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 948043
+    },
+    {
+      "Id": 787543,
+      "Type": 1,
+      "Title": "Assorted Metal Shelving Units and Panels Lot",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/5f49a1fc-a83e-4daa-9a2d-405bf48b63fc/5f49a1fc-a83e-4daa-9a2d-405bf48b63fc-Zoom.jpg",
+      "LotNumber": 261000488,
+      "Location": "Harare",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 30,
+      "CurrentBid": 160,
+      "CurrentBidderId": 900000031,
+      "StartDate": "2026-10-23T10:30:00.000Z",
+      "EndDate": "2125-10-26T18:13:58.000Z",
+      "Price": null,
+      "Status": 2,
+      "STC": false,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 953971
+    },
+    {
+      "Id": 793549,
+      "Type": 1,
+      "Title": "Elegant Wooden Chest of Drawers",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/113001d0-67ad-4c39-8c5f-71567d03ace5/113001d0-67ad-4c39-8c5f-71567d03ace5-Zoom.jpg",
+      "LotNumber": 261006645,
+      "Location": "Harare",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 90,
+      "CurrentBid": 225,
+      "CurrentBidderId": 900000032,
+      "StartDate": "2026-10-23T10:30:00.000Z",
+      "EndDate": "2125-10-26T18:20:03.000Z",
+      "Price": null,
+      "Status": 2,
+      "STC": true,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 955220
+    },
+    {
+      "Id": 795278,
+      "Type": 1,
+      "Title": "Pair of Red Metal Stoves with Rusted Tops",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/8b5ce1d9-4636-4aaa-9333-0faa6c04efeb/8b5ce1d9-4636-4aaa-9333-0faa6c04efeb-Zoom.jpg",
+      "LotNumber": 261008492,
+      "Location": "Harare",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 5,
+      "CurrentBid": 25,
+      "CurrentBidderId": 900000033,
+      "StartDate": "2026-10-24T10:30:00.000Z",
+      "EndDate": "2125-10-28T18:23:58.000Z",
+      "Price": null,
+      "Status": 2,
+      "STC": false,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 954208
+    },
+    {
+      "Id": 794853,
+      "Type": 1,
+      "Title": "Pro Trim Garden Blower/Vacuum with Strap",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/02c6ddc5-2b2e-449e-b6d1-bebfaa2df104/02c6ddc5-2b2e-449e-b6d1-bebfaa2df104-Zoom.jpg",
+      "LotNumber": 261008058,
+      "Location": "Bulawayo",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 3,
+      "CurrentBid": 4,
+      "CurrentBidderId": 900000034,
+      "StartDate": "2026-10-24T10:30:00.000Z",
+      "EndDate": "2125-10-29T17:01:59.000Z",
+      "Price": null,
+      "Status": 2,
+      "STC": false,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 954881
+    },
+    {
+      "Id": 794206,
+      "Type": 1,
+      "Title": "Powerful 20-inch Gasoline Chainsaw with Accessories",
+      "Photo": "https://cdn-s3.abcauctions.co.zw/e7868fc2-3af7-40a5-a792-71e4478e9ff5/e7868fc2-3af7-40a5-a792-71e4478e9ff5-Zoom.jpg",
+      "LotNumber": 261007383,
+      "Location": "Harare",
+      "EstimatedValue": null,
+      "Currency": "USD",
+      "StartingBid": 25,
+      "CurrentBid": 80,
+      "CurrentBidderId": 900000035,
+      "StartDate": "2026-10-24T10:30:00.000Z",
+      "EndDate": "2125-10-29T17:10:00.000Z",
+      "Price": null,
+      "Status": 2,
+      "STC": false,
+      "SaleStatus": 1,
+      "Watching": false,
+      "MaxBid": null,
+      "AuctionLotId": 952531
+    }
+  ],
+  "Meta": {
+    "Count": 1459,
+    "Facets": [
+      {
+        "Name": "sale_status",
+        "Buckets": [
+          {
+            "Value": "Sold",
+            "Count": 1459,
+            "Checked": true
+          }
+        ],
+        "Title": "Status"
+      },
+      {
+        "Name": "lot_type",
+        "Buckets": [
+          {
+            "Value": "Goods",
+            "Count": 1425,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicle",
+            "Count": 34,
+            "Checked": false
+          }
+        ],
+        "Title": "Lot Type"
+      },
+      {
+        "Name": "location",
+        "Buckets": [
+          {
+            "Value": "Harare",
+            "Count": 1139,
+            "Checked": false
+          },
+          {
+            "Value": "Bulawayo",
+            "Count": 320,
+            "Checked": false
+          }
+        ],
+        "Title": "Location"
+      },
+      {
+        "Name": "make",
+        "Buckets": [
+          {
+            "Value": "ABC",
+            "Count": 189,
+            "Checked": false
+          },
+          {
+            "Value": "HP",
+            "Count": 75,
+            "Checked": false
+          },
+          {
+            "Value": "Unknown",
+            "Count": 53,
+            "Checked": false
+          },
+          {
+            "Value": "Toyota",
+            "Count": 50,
+            "Checked": false
+          },
+          {
+            "Value": "Cisco",
+            "Count": 45,
+            "Checked": false
+          },
+          {
+            "Value": "Lenovo",
+            "Count": 45,
+            "Checked": false
+          },
+          {
+            "Value": "Isuzu",
+            "Count": 39,
+            "Checked": false
+          },
+          {
+            "Value": "Jadever",
+            "Count": 25,
+            "Checked": false
+          },
+          {
+            "Value": "Dell",
+            "Count": 23,
+            "Checked": false
+          },
+          {
+            "Value": "Samsung",
+            "Count": 17,
+            "Checked": false
+          }
+        ],
+        "Title": "Make"
+      },
+      {
+        "Name": "year",
+        "Buckets": [
+          {
+            "Value": "2010",
+            "Count": 3,
+            "Checked": false
+          },
+          {
+            "Value": "2009",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "2013",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "2014",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "2019",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "2020",
+            "Count": 2,
+            "Checked": false
+          },
+          {
+            "Value": "1993",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "1994",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "1997",
+            "Count": 1,
+            "Checked": false
+          },
+          {
+            "Value": "2003",
+            "Count": 1,
+            "Checked": false
+          }
+        ],
+        "Title": "Year"
+      },
+      {
+        "Name": "category",
+        "Buckets": [
+          {
+            "Value": "Electronics",
+            "Count": 369,
+            "Checked": false
+          },
+          {
+            "Value": "Hardware",
+            "Count": 296,
+            "Checked": false
+          },
+          {
+            "Value": "Home & Garden",
+            "Count": 208,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicles & Parts",
+            "Count": 201,
+            "Checked": false
+          },
+          {
+            "Value": "Furniture",
+            "Count": 162,
+            "Checked": false
+          },
+          {
+            "Value": "Business & Industrial",
+            "Count": 68,
+            "Checked": false
+          },
+          {
+            "Value": "Office Supplies",
+            "Count": 51,
+            "Checked": false
+          },
+          {
+            "Value": "Sporting Goods",
+            "Count": 29,
+            "Checked": false
+          },
+          {
+            "Value": "Apparel & Accessories",
+            "Count": 24,
+            "Checked": false
+          },
+          {
+            "Value": "Toys & Games",
+            "Count": 14,
+            "Checked": false
+          }
+        ],
+        "Title": "Category"
+      },
+      {
+        "Name": "sub_category",
+        "Buckets": [
+          {
+            "Value": "Vehicle Parts & Accessories",
+            "Count": 170,
+            "Checked": false
+          },
+          {
+            "Value": "Motor Vehicle Parts",
+            "Count": 158,
+            "Checked": false
+          },
+          {
+            "Value": "Computers",
+            "Count": 130,
+            "Checked": false
+          },
+          {
+            "Value": "Tools",
+            "Count": 103,
+            "Checked": false
+          },
+          {
+            "Value": "Print, Copy, Scan & Fax",
+            "Count": 68,
+            "Checked": false
+          },
+          {
+            "Value": "Power & Electrical Supplies",
+            "Count": 63,
+            "Checked": false
+          },
+          {
+            "Value": "Networking",
+            "Count": 54,
+            "Checked": false
+          },
+          {
+            "Value": "Kitchen & Dining",
+            "Count": 45,
+            "Checked": false
+          },
+          {
+            "Value": "Chairs",
+            "Count": 37,
+            "Checked": false
+          },
+          {
+            "Value": "Electronics Accessories",
+            "Count": 35,
+            "Checked": false
+          }
+        ],
+        "Title": "Subcategory"
+      },
+      {
+        "Name": "final_category",
+        "Buckets": [
+          {
+            "Value": "Desktop Computers",
+            "Count": 87,
+            "Checked": false
+          },
+          {
+            "Value": "Printers, Copiers & Fax Machines",
+            "Count": 66,
+            "Checked": false
+          },
+          {
+            "Value": "Motor Vehicle Fuel Systems",
+            "Count": 46,
+            "Checked": false
+          },
+          {
+            "Value": "Cars, Trucks & Vans",
+            "Count": 27,
+            "Checked": false
+          },
+          {
+            "Value": "Motor Vehicle Engine Oil Circulation",
+            "Count": 27,
+            "Checked": false
+          },
+          {
+            "Value": "Laptops",
+            "Count": 24,
+            "Checked": false
+          },
+          {
+            "Value": "Shoes",
+            "Count": 23,
+            "Checked": false
+          },
+          {
+            "Value": "Hubs & Switches",
+            "Count": 22,
+            "Checked": false
+          },
+          {
+            "Value": "Motor Vehicle Engine Parts",
+            "Count": 22,
+            "Checked": false
+          },
+          {
+            "Value": "Hand Tool Sets",
+            "Count": 18,
+            "Checked": false
+          }
+        ],
+        "Title": "Specific Category"
+      },
+      {
+        "Name": "condition",
+        "Buckets": [
+          {
+            "Value": "As Is",
+            "Count": 1181,
+            "Checked": false
+          },
+          {
+            "Value": "Sealed Packaging",
+            "Count": 97,
+            "Checked": false
+          },
+          {
+            "Value": "Working",
+            "Count": 47,
+            "Checked": false
+          },
+          {
+            "Value": "Damaged",
+            "Count": 41,
+            "Checked": false
+          },
+          {
+            "Value": "Untested",
+            "Count": 37,
+            "Checked": false
+          },
+          {
+            "Value": "Runner",
+            "Count": 18,
+            "Checked": false
+          },
+          {
+            "Value": "Not Working",
+            "Count": 13,
+            "Checked": false
+          },
+          {
+            "Value": "Accident Damaged",
+            "Count": 8,
+            "Checked": false
+          },
+          {
+            "Value": "Partly Working",
+            "Count": 8,
+            "Checked": false
+          },
+          {
+            "Value": "Non-runner",
+            "Count": 5,
+            "Checked": false
+          }
+        ],
+        "Title": "Condition"
+      },
+      {
+        "Name": "campaign",
+        "Buckets": [
+          {
+            "Value": "IT & Office Equipment Auction - HGS#074",
+            "Count": 223,
+            "Checked": false
+          },
+          {
+            "Value": "Harare Goods Auction - HGA#284",
+            "Count": 115,
+            "Checked": false
+          },
+          {
+            "Value": "Vehicles Spares & Auto Parts  Auction - TVS#010",
+            "Count": 115,
+            "Checked": false
+          },
+          {
+            "Value": "Machinery & Tools Auction - HYS#211",
+            "Count": 109,
+            "Checked": false
+          },
+          {
+            "Value": "Harare Goods Auction - HGA#283",
+            "Count": 107,
+            "Checked": false
+          },
+          {
+            "Value": "Bulawayo Goods Auction - BGA#236",
+            "Count": 96,
+            "Checked": false
+          },
+          {
+            "Value": "Embassy Household, Yard & Office Auction -  HGS#078",
+            "Count": 88,
+            "Checked": false
+          },
+          {
+            "Value": "Harare Goods Auction - HGA#282",
+            "Count": 76,
+            "Checked": false
+          },
+          {
+            "Value": "Bulawayo Goods Auction - BGA#233",
+            "Count": 63,
+            "Checked": false
+          },
+          {
+            "Value": "BYO Industrial Machinery & Tools Auction - BGA#235",
+            "Count": 44,
+            "Checked": false
+          }
+        ],
+        "Title": "Campaign"
+      }
+    ],
+    "Cursor": "VdbYCngcQW9KNHg5R25nZmtJS2pNdU1TNDNPVGMyTkRjPWQ"
+  }
+}

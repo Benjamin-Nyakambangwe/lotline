@@ -1,0 +1,231 @@
+{
+  "Id": 23551,
+  "Type": 2,
+  "Title": "2022 Toyota Fortuner 2.8 GD6 SUV",
+  "Photo": "https://cdn-s3.abcauctions.co.zw/93be3747-1f6c-4d22-a2a5-e1144dfb1130/93be3747-1f6c-4d22-a2a5-e1144dfb1130-Zoom.jpg",
+  "LotNumber": 261013968,
+  "AuctionLotId": 963321,
+  "CurrentBidderId": 900000037,
+  "Category": "Light Vehicles → SUV",
+  "Gallery": [
+    {
+      "Id": 7561240,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/93be3747-1f6c-4d22-a2a5-e1144dfb1130/93be3747-1f6c-4d22-a2a5-e1144dfb1130-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/93be3747-1f6c-4d22-a2a5-e1144dfb1130/93be3747-1f6c-4d22-a2a5-e1144dfb1130-Zoom.jpg"
+    },
+    {
+      "Id": 7561252,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/59be684b-1d7a-4c34-8c8b-df14ba33164a/59be684b-1d7a-4c34-8c8b-df14ba33164a-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/59be684b-1d7a-4c34-8c8b-df14ba33164a/59be684b-1d7a-4c34-8c8b-df14ba33164a-Zoom.jpg"
+    },
+    {
+      "Id": 7561243,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/c11c5216-a72a-4870-9efa-dccef86a87df/c11c5216-a72a-4870-9efa-dccef86a87df-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/c11c5216-a72a-4870-9efa-dccef86a87df/c11c5216-a72a-4870-9efa-dccef86a87df-Zoom.jpg"
+    },
+    {
+      "Id": 7561245,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/e159eec9-0d65-4ad9-9ab7-6443f4f0bdde/e159eec9-0d65-4ad9-9ab7-6443f4f0bdde-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/e159eec9-0d65-4ad9-9ab7-6443f4f0bdde/e159eec9-0d65-4ad9-9ab7-6443f4f0bdde-Zoom.jpg"
+    },
+    {
+      "Id": 7561246,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/f410c0da-9b0f-4e41-8109-e60d81df1f23/f410c0da-9b0f-4e41-8109-e60d81df1f23-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/f410c0da-9b0f-4e41-8109-e60d81df1f23/f410c0da-9b0f-4e41-8109-e60d81df1f23-Zoom.jpg"
+    },
+    {
+      "Id": 7561241,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/b06e017b-0847-4b8b-8e9c-463206d2006b/b06e017b-0847-4b8b-8e9c-463206d2006b-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/b06e017b-0847-4b8b-8e9c-463206d2006b/b06e017b-0847-4b8b-8e9c-463206d2006b-Zoom.jpg"
+    },
+    {
+      "Id": 7561244,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/a8b683ce-c6b6-4b77-b43b-22f9ea72882d/a8b683ce-c6b6-4b77-b43b-22f9ea72882d-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/a8b683ce-c6b6-4b77-b43b-22f9ea72882d/a8b683ce-c6b6-4b77-b43b-22f9ea72882d-Zoom.jpg"
+    },
+    {
+      "Id": 7561271,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/1d6ea6ec-6d47-4fc1-a4ed-e7c57c73a983/1d6ea6ec-6d47-4fc1-a4ed-e7c57c73a983-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/1d6ea6ec-6d47-4fc1-a4ed-e7c57c73a983/1d6ea6ec-6d47-4fc1-a4ed-e7c57c73a983-Zoom.jpg"
+    },
+    {
+      "Id": 7561263,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/4ea712bc-1d5a-4b86-8366-65090c745b0f/4ea712bc-1d5a-4b86-8366-65090c745b0f-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/4ea712bc-1d5a-4b86-8366-65090c745b0f/4ea712bc-1d5a-4b86-8366-65090c745b0f-Zoom.jpg"
+    },
+    {
+      "Id": 7561254,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/112fa545-c046-4980-9493-42c9801a6d8f/112fa545-c046-4980-9493-42c9801a6d8f-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/112fa545-c046-4980-9493-42c9801a6d8f/112fa545-c046-4980-9493-42c9801a6d8f-Zoom.jpg"
+    },
+    {
+      "Id": 7561261,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/7afaaeb7-c2c7-428d-9a47-43f92e88203c/7afaaeb7-c2c7-428d-9a47-43f92e88203c-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/7afaaeb7-c2c7-428d-9a47-43f92e88203c/7afaaeb7-c2c7-428d-9a47-43f92e88203c-Zoom.jpg"
+    },
+    {
+      "Id": 7561258,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/000a64ac-4cbf-468e-97b2-7ef5cabb730b/000a64ac-4cbf-468e-97b2-7ef5cabb730b-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/000a64ac-4cbf-468e-97b2-7ef5cabb730b/000a64ac-4cbf-468e-97b2-7ef5cabb730b-Zoom.jpg"
+    },
+    {
+      "Id": 7561249,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/bddaac55-759c-4aed-b06a-c6e7cab1538d/bddaac55-759c-4aed-b06a-c6e7cab1538d-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/bddaac55-759c-4aed-b06a-c6e7cab1538d/bddaac55-759c-4aed-b06a-c6e7cab1538d-Zoom.jpg"
+    },
+    {
+      "Id": 7561260,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/e0bf2000-8bed-48d5-b767-83c7bc04a707/e0bf2000-8bed-48d5-b767-83c7bc04a707-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/e0bf2000-8bed-48d5-b767-83c7bc04a707/e0bf2000-8bed-48d5-b767-83c7bc04a707-Zoom.jpg"
+    },
+    {
+      "Id": 7561259,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/ca2c4da3-a8f2-4f8a-9f88-a20a82d65524/ca2c4da3-a8f2-4f8a-9f88-a20a82d65524-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/ca2c4da3-a8f2-4f8a-9f88-a20a82d65524/ca2c4da3-a8f2-4f8a-9f88-a20a82d65524-Zoom.jpg"
+    },
+    {
+      "Id": 7561257,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/20012a9b-02b9-4ceb-a3cd-e81fc2b6a856/20012a9b-02b9-4ceb-a3cd-e81fc2b6a856-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/20012a9b-02b9-4ceb-a3cd-e81fc2b6a856/20012a9b-02b9-4ceb-a3cd-e81fc2b6a856-Zoom.jpg"
+    },
+    {
+      "Id": 7561250,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/329fc72c-7b60-4bfe-90cf-7df9d895c19f/329fc72c-7b60-4bfe-90cf-7df9d895c19f-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/329fc72c-7b60-4bfe-90cf-7df9d895c19f/329fc72c-7b60-4bfe-90cf-7df9d895c19f-Zoom.jpg"
+    },
+    {
+      "Id": 7561248,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/cb02fd92-caf0-43b6-9514-34ed7bdb8ba0/cb02fd92-caf0-43b6-9514-34ed7bdb8ba0-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/cb02fd92-caf0-43b6-9514-34ed7bdb8ba0/cb02fd92-caf0-43b6-9514-34ed7bdb8ba0-Zoom.jpg"
+    },
+    {
+      "Id": 7561264,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/16393088-4115-4f77-b21f-62b8f24d9f03/16393088-4115-4f77-b21f-62b8f24d9f03-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/16393088-4115-4f77-b21f-62b8f24d9f03/16393088-4115-4f77-b21f-62b8f24d9f03-Zoom.jpg"
+    },
+    {
+      "Id": 7561265,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/01a21b09-9621-4365-8e41-4647715792bf/01a21b09-9621-4365-8e41-4647715792bf-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/01a21b09-9621-4365-8e41-4647715792bf/01a21b09-9621-4365-8e41-4647715792bf-Zoom.jpg"
+    },
+    {
+      "Id": 7561262,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/b5708535-95a8-4b72-8a05-3688525c2fc5/b5708535-95a8-4b72-8a05-3688525c2fc5-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/b5708535-95a8-4b72-8a05-3688525c2fc5/b5708535-95a8-4b72-8a05-3688525c2fc5-Zoom.jpg"
+    },
+    {
+      "Id": 7561268,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/5e417e94-2b24-497a-b54d-4471f12b3c2c/5e417e94-2b24-497a-b54d-4471f12b3c2c-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/5e417e94-2b24-497a-b54d-4471f12b3c2c/5e417e94-2b24-497a-b54d-4471f12b3c2c-Zoom.jpg"
+    },
+    {
+      "Id": 7561253,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/dc36005b-a3aa-4fed-b3a3-b94abd668d4b/dc36005b-a3aa-4fed-b3a3-b94abd668d4b-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/dc36005b-a3aa-4fed-b3a3-b94abd668d4b/dc36005b-a3aa-4fed-b3a3-b94abd668d4b-Zoom.jpg"
+    },
+    {
+      "Id": 7561267,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/195defc7-ba82-41c5-aada-f7b58def550d/195defc7-ba82-41c5-aada-f7b58def550d-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/195defc7-ba82-41c5-aada-f7b58def550d/195defc7-ba82-41c5-aada-f7b58def550d-Zoom.jpg"
+    },
+    {
+      "Id": 7561270,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/4af2136a-510f-4465-aac5-c2b6f73196c6/4af2136a-510f-4465-aac5-c2b6f73196c6-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/4af2136a-510f-4465-aac5-c2b6f73196c6/4af2136a-510f-4465-aac5-c2b6f73196c6-Zoom.jpg"
+    },
+    {
+      "Id": 7561256,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/3a24d0d7-2694-4235-a77b-0d516463088a/3a24d0d7-2694-4235-a77b-0d516463088a-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/3a24d0d7-2694-4235-a77b-0d516463088a/3a24d0d7-2694-4235-a77b-0d516463088a-Zoom.jpg"
+    },
+    {
+      "Id": 7566548,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/709d28f8-bc1e-48da-bbe4-9189693b31ef/709d28f8-bc1e-48da-bbe4-9189693b31ef-Thumb.png",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/709d28f8-bc1e-48da-bbe4-9189693b31ef/709d28f8-bc1e-48da-bbe4-9189693b31ef-Zoom.png"
+    },
+    {
+      "Id": 7566549,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/97f1d6c8-e36f-43af-8cac-d7f0472ff4c0/97f1d6c8-e36f-43af-8cac-d7f0472ff4c0-Thumb.png",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/97f1d6c8-e36f-43af-8cac-d7f0472ff4c0/97f1d6c8-e36f-43af-8cac-d7f0472ff4c0-Zoom.png"
+    },
+    {
+      "Id": 7566550,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/5b07f439-a700-42a5-a788-d5eba722ca21/5b07f439-a700-42a5-a788-d5eba722ca21-Thumb.png",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/5b07f439-a700-42a5-a788-d5eba722ca21/5b07f439-a700-42a5-a788-d5eba722ca21-Zoom.png"
+    },
+    {
+      "Id": 7566551,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/6943c4e7-cebd-4cd9-a947-e2d324fc9e59/6943c4e7-cebd-4cd9-a947-e2d324fc9e59-Thumb.png",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/6943c4e7-cebd-4cd9-a947-e2d324fc9e59/6943c4e7-cebd-4cd9-a947-e2d324fc9e59-Zoom.png"
+    },
+    {
+      "Id": 7561242,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/71ff9308-fc29-4baf-858c-35b98059ee68/71ff9308-fc29-4baf-858c-35b98059ee68-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/71ff9308-fc29-4baf-858c-35b98059ee68/71ff9308-fc29-4baf-858c-35b98059ee68-Zoom.jpg"
+    },
+    {
+      "Id": 7561247,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/cee91077-8946-4bd2-9502-537c15dc2c78/cee91077-8946-4bd2-9502-537c15dc2c78-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/cee91077-8946-4bd2-9502-537c15dc2c78/cee91077-8946-4bd2-9502-537c15dc2c78-Zoom.jpg"
+    },
+    {
+      "Id": 7561266,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/0ded9c75-7637-421f-82f4-9a44aa9c248e/0ded9c75-7637-421f-82f4-9a44aa9c248e-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/0ded9c75-7637-421f-82f4-9a44aa9c248e/0ded9c75-7637-421f-82f4-9a44aa9c248e-Zoom.jpg"
+    },
+    {
+      "Id": 7561269,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/011333d1-9680-4de3-b00b-8fe3ad2ff9a1/011333d1-9680-4de3-b00b-8fe3ad2ff9a1-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/011333d1-9680-4de3-b00b-8fe3ad2ff9a1/011333d1-9680-4de3-b00b-8fe3ad2ff9a1-Zoom.jpg"
+    },
+    {
+      "Id": 7561251,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/a183eafc-45f3-4e9d-9cd7-28aec604f22c/a183eafc-45f3-4e9d-9cd7-28aec604f22c-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/a183eafc-45f3-4e9d-9cd7-28aec604f22c/a183eafc-45f3-4e9d-9cd7-28aec604f22c-Zoom.jpg"
+    },
+    {
+      "Id": 7561255,
+      "ThumbPath": "https://cdn-s3.abcauctions.co.zw/d25c7928-4965-405b-af8a-2de491ea82bb/d25c7928-4965-405b-af8a-2de491ea82bb-Thumb.jpg",
+      "ZoomPath": "https://cdn-s3.abcauctions.co.zw/d25c7928-4965-405b-af8a-2de491ea82bb/d25c7928-4965-405b-af8a-2de491ea82bb-Zoom.jpg"
+    }
+  ],
+  "Location": "Harare",
+  "Sublocation": "ABC Auctions, Hatfield House, Seke Road, Graniteside, Harare",
+  "Condition": "Runner",
+  "Year": 2022,
+  "Mileage": "73,228Km",
+  "OtherInformation": "<ul><li><strong>Key available</strong></li><li><strong>Reg book states vehicle colour is Oxide bronxe me, it is brown</strong></li><li>Vehicle license expires 12/2026</li><li>Third plate available</li><li>Automatic transmission</li><li>4x4 drive</li><li>A/c</li><li>Electric windows</li><li>Alloy wheels</li></ul>",
+  "Currency": "USD",
+  "Price": null,
+  "PriceExclFees": null,
+  "Destinations": [
+    {
+      "Id": 15557,
+      "Title": "Harare",
+      "Currency": "USD",
+      "Price": 0,
+      "Tax": 0.155
+    }
+  ],
+  "StartDate": "2026-11-06T10:30:00.000Z",
+  "EndDate": "2026-11-12T17:00:00.000Z",
+  "OfferWindowEndDate": "2026-11-13T13:00:00.000Z",
+  "CurrentBid": 7600,
+  "StartingBid": 7700,
+  "EstimatedValue": null,
+  "PurchasersLevy": 0.175,
+  "LotVAT": 0,
+  "VAT": 0.155,
+  "SaleStatus": 1,
+  "Status": 1,
+  "STC": false,
+  "Watching": false,
+  "MaxBid": null,
+  "HighestBidder": false,
+  "Url": "https://app.abcauctions.co.zw/lot/2/23551",
+  "ViewingDetails": {
+    "Title": "ABC Auctions, Hatfield House, Seke Road, Graniteside, Harare",
+    "Subtitle": "Vehicles Front Yard",
+    "Description": "<p>Viewing currently available at the below times.<br><i>• 09:00-15:00 Monday-Friday</i><br><i>• 09:00-12:00 Saturday</i><br><strong>Viewing is important and encouraged to avoid disappointment.</strong><br>NB: Times may change without notice and we recommend checking this information immediately prior to viewing.</p><p>Payment due within 2 days of winning<br>Collection due within 2 days of paying</p>"
+  }
+}
