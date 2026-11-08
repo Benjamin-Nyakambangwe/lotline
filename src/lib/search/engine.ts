@@ -40,6 +40,8 @@ export interface CatalogueDoc {
   stc: boolean;
   quantity: number;
   thumbUrl: string | null;
+  /** how many photos the lot has (0 until its detail is read) */
+  photos: number;
   cpu: string | null;
   /** fee rates if known: [levy, vat, lotVat] */
   rates: [number, number, number] | null;

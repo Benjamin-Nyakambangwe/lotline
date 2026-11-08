@@ -27,6 +27,7 @@ const doc = (title: string, o: Partial<CatalogueDoc> = {}): CatalogueDoc => ({
   stc: false,
   quantity: 1,
   thumbUrl: null,
+  photos: 0,
   cpu: null,
   rates: null,
   ...o,

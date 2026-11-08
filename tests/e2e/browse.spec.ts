@@ -123,3 +123,56 @@ test("a lot has a full page too", async ({ page }) => {
     page.locator("main").getByRole("heading", { level: 2 }),
   ).toContainText(/optiplex/i);
 });
+
+test("cards lead with a big photo you can swipe through", async ({
+  page,
+}, info) => {
+  await page.goto("/browse?q=chair");
+  const carousel = page
+    .locator("main section[aria-roledescription='carousel']")
+    .filter({ hasText: /^.*\/\d+/ })
+    .first();
+  await expect(carousel).toBeVisible({ timeout: 20_000 });
+  const counter = carousel.getByText(/^1\/\d+$/);
+  await expect(counter).toBeVisible();
+  const box = await carousel.boundingBox();
+  expect(box?.height ?? 0).toBeGreaterThan(150); // prominent, not a thumbnail
+
+  if (info.project.name === "phone") {
+    // Swipe: scroll the track one photo along.
+    await carousel
+      .locator("div.snap-x")
+      .evaluate((el) => el.scrollTo({ left: el.clientWidth }));
+  } else {
+    await carousel.hover();
+    await carousel.getByRole("button", { name: "Next photo" }).click();
+  }
+  await expect(carousel.getByText(/^2\/\d+$/)).toBeVisible();
+  // The rest of the gallery arrived and the second photo rendered.
+  const second = carousel.locator("img").nth(1);
+  await expect(second).toBeVisible({ timeout: 10_000 });
+  await expect
+    .poll(
+      () =>
+        second.evaluate(
+          (img: HTMLImageElement) => img.complete && img.naturalWidth,
+        ),
+      {
+        timeout: 20_000,
+      },
+    )
+    .toBeGreaterThan(0);
+  if (process.env.E2E_SCREENSHOTS)
+    await page.screenshot({
+      path: `${process.env.E2E_SCREENSHOTS}/cards-${info.project.name}.png`,
+    });
+
+  // Tapping the photo opens the lot, which shows its photos large too.
+  await carousel.locator("img").nth(1).click();
+  await expect(page).toHaveURL(/lot=\d+/);
+  await expect(
+    page.locator(
+      "[aria-label='Lot details'] section[aria-roledescription='carousel']",
+    ),
+  ).toBeVisible({ timeout: 15_000 });
+});

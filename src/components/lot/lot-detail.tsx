@@ -5,7 +5,6 @@ import {
   ChevronRight,
   ExternalLink,
   Gavel,
-  Images,
   Info,
   Layers,
   MapPin,
@@ -15,10 +14,11 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { lotUrl } from "@/lib/abc/urls";
+import type { GalleryItem } from "@/lib/db/schema";
 import {
   allIn,
   type FeeRates,
@@ -36,10 +36,10 @@ import {
   BigCountdown,
   Countdown,
   ExtendedChip,
-  LotThumb,
   RunBadge,
   ratesOf,
 } from "./bits";
+import { PhotoCarousel, zoomOf } from "./photo-carousel";
 
 /** Fields we can show before the detail arrives (from the in-browser catalogue). */
 type Basic = Pick<
@@ -54,6 +54,7 @@ type Basic = Pick<
   | "endAt"
   | "stc"
 > & {
+  photos?: number;
   lotNumber?: number | null;
   photoUrl?: string | null;
   thumbUrl?: string | null;
@@ -82,12 +83,25 @@ export function LotDetail({
     ? !!lot.endAt && !!lot.originalEndAt && lot.endAt > lot.originalEndAt
     : !!(basic as CatalogueDoc | null)?.extended;
   const next = b.startingBid;
-  const photo = lot?.photoUrl ?? basic?.photoUrl ?? basic?.thumbUrl ?? null;
+  const photo =
+    lot?.photoUrl ?? basic?.photoUrl ?? zoomOf(basic?.thumbUrl ?? null) ?? null;
 
+  // Phones (the sheet): prices first, photos after. Wider screens: photos on top.
+  const photos = (
+    <LotPhotos
+      id={b.id}
+      title={b.title}
+      first={photo}
+      count={lot ? lot.gallery.length : (basic?.photos ?? 1)}
+      photos={lot?.gallery}
+      compact={compact}
+      className={compact ? "xl:-order-1" : undefined}
+    />
+  );
   return (
     <article className="flex flex-col gap-5">
+      {!compact && photos}
       <header className="flex gap-3">
-        {compact && <LotThumb src={photo} alt="" size={72} />}
         <div className="min-w-0">
           <p className="font-mono text-xs text-muted-foreground">
             Lot {b.id}
@@ -231,6 +245,7 @@ export function LotDetail({
               : " "}
         </p>
       </section>
+      {compact && photos}
 
       {run && run.size >= 3 && !final && (
         <section className="flex gap-3 rounded-2xl border border-chart-1/30 bg-chart-1/8 p-4 text-sm">
@@ -251,8 +266,6 @@ export function LotDetail({
       )}
 
       {!final && next !== null && <FeeCalculator next={next} rates={rates} />}
-
-      {lot && lot.gallery.length > 0 && <Gallery lot={lot} />}
 
       {lot?.descriptionHtml && (
         <section>
@@ -452,42 +465,61 @@ function FeeCalculator({ next, rates }: { next: number; rates: FeeRates }) {
   );
 }
 
-/** Photos on demand: one small image, and the full gallery only when asked for. */
-function Gallery({ lot }: { lot: LotView }) {
-  const [open, setOpen] = useState(false);
-  const [i, setI] = useState(0);
-  const items = lot.gallery;
-  const cur = items[i];
-  const go = (d: number) => setI((x) => (x + d + items.length) % items.length);
-  const first = useMemo(
-    () => items[0]?.thumb ?? items[0]?.zoom ?? null,
-    [items],
-  );
+/**
+ * The lot's photos, large: swipe through them here, tap one for the full-size view. Shorter in
+ * the phone sheet so prices stay in view.
+ */
+function LotPhotos({
+  id,
+  title,
+  first,
+  count,
+  photos,
+  compact,
+  className,
+}: {
+  className?: string;
+  id: number;
+  title: string;
+  first: string | null;
+  count: number;
+  photos: GalleryItem[] | undefined;
+  compact: boolean;
+}) {
+  const [open, setOpen] = useState<number | null>(null);
+  const items = photos?.length
+    ? photos
+    : first
+      ? [{ zoom: first, thumb: null }]
+      : [];
+  const i = open ?? 0;
+  const go = (d: number) =>
+    setOpen((x) => ((x ?? 0) + d + items.length) % items.length);
+  if (!first && !photos?.length) return null;
   return (
-    <section>
-      <button
-        type="button"
-        onClick={() => {
-          setI(0);
-          setOpen(true);
-        }}
-        className="group flex w-full items-center gap-3 rounded-2xl border p-3 text-left hover:bg-surface-2"
-      >
-        <LotThumb src={first} alt="" size={96} />
-        <span className="flex-1">
-          <span className="flex items-center gap-1.5 text-sm font-semibold">
-            <Images
-              className="size-4 text-muted-foreground"
-              aria-hidden="true"
-            />
-            View {items.length} photo{items.length === 1 ? "" : "s"}
-          </span>
-          <span className="text-xs text-muted-foreground">
-            Loads full-size images only when you open them.
-          </span>
-        </span>
-      </button>
-      <Dialog open={open} onOpenChange={setOpen}>
+    <>
+      <PhotoCarousel
+        lotId={id}
+        title={title}
+        first={first}
+        count={count}
+        photos={photos?.length ? photos : undefined}
+        sizes={
+          compact
+            ? "(min-width: 1280px) 460px, 100vw"
+            : "(min-width: 1024px) 720px, 100vw"
+        }
+        quality={75}
+        fit="contain"
+        eager
+        onOpen={(n) => setOpen(n)}
+        className={cn(
+          "rounded-2xl bg-black",
+          compact ? "aspect-[16/10]" : "aspect-[4/3]",
+          className,
+        )}
+      />
+      <Dialog open={open !== null} onOpenChange={(o) => !o && setOpen(null)}>
         <DialogContent
           className="max-w-4xl gap-3 p-3 sm:p-4"
           onKeyDown={(e) => {
@@ -496,13 +528,13 @@ function Gallery({ lot }: { lot: LotView }) {
           }}
         >
           <DialogTitle className="pr-8 text-sm">
-            {lot.title} · {i + 1} of {items.length}
+            {title} · {i + 1} of {items.length}
           </DialogTitle>
-          {cur && (
+          {items[i] && (
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-black">
               <Image
-                src={cur.zoom}
-                alt={`${lot.title}, photo ${i + 1}`}
+                src={items[i].zoom}
+                alt={`${title}, photo ${i + 1}`}
                 fill
                 sizes="(max-width: 900px) 100vw, 900px"
                 quality={75}
@@ -535,7 +567,7 @@ function Gallery({ lot }: { lot: LotView }) {
           )}
         </DialogContent>
       </Dialog>
-    </section>
+    </>
   );
 }
 

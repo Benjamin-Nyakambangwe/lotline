@@ -53,6 +53,7 @@ import {
   RunBadge,
   ratesOf,
 } from "../lot/bits";
+import { PhotoCarousel, zoomOf } from "../lot/photo-carousel";
 import { useNow } from "../time/ticker";
 
 const ENDS = ["hour", "today", "tomorrow", "week", "later"] as const;
@@ -443,11 +444,12 @@ export function BrowseClient() {
               ))}
             </ul>
           ) : (
-            <div className="grid gap-3 @2xl:grid-cols-2 @5xl:grid-cols-3 @7xl:grid-cols-4">
-              {result.hits.slice(0, limit).map((h) => (
+            <div className="grid gap-4 @xl:grid-cols-2 @4xl:grid-cols-3 @6xl:grid-cols-4">
+              {result.hits.slice(0, limit).map((h, i) => (
                 <ResultCard
                   key={h.doc.id}
                   hit={h}
+                  eager={i < 3}
                   onOpen={() => void setLot(h.doc.id)}
                 />
               ))}
@@ -605,43 +607,67 @@ function PriceLines({ hit }: { hit: Hit }) {
   );
 }
 
-function ResultCard({ hit, onOpen }: { hit: Hit; onOpen: () => void }) {
+function ResultCard({
+  hit,
+  onOpen,
+  eager = false,
+}: {
+  hit: Hit;
+  onOpen: () => void;
+  eager?: boolean;
+}) {
   const d = hit.doc;
   return (
-    <button
-      type="button"
-      onClick={onOpen}
-      className="group flex flex-col rounded-2xl border bg-card p-3 text-left transition-colors hover:border-primary/40 hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-ring"
-    >
-      <div className="flex gap-3">
-        <LotThumb src={d.thumbUrl} alt="" size={88} />
-        <div className="min-w-0 flex-1">
-          <h3 className="line-clamp-2 text-sm leading-snug font-semibold">
-            <Highlight title={d.title} matched={hit.matched} />
-          </h3>
-          <p className="mt-1 truncate text-xs text-muted-foreground">
-            {[d.location, d.auction, d.condition ?? d.category, d.cpu]
-              .filter(Boolean)
-              .join(" · ")}
-          </p>
-        </div>
-      </div>
-      <div className="mt-3 flex items-end justify-between gap-3">
-        <PriceLines hit={hit} />
-        <div className="flex shrink-0 flex-col items-end gap-1 text-xs">
+    <article className="group flex flex-col overflow-hidden rounded-2xl border bg-card transition-colors hover:border-primary/40">
+      <PhotoCarousel
+        lotId={d.id}
+        title={d.title}
+        first={zoomOf(d.thumbUrl)}
+        count={d.photos}
+        sizes="(min-width: 1536px) 24vw, (min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw"
+        onOpen={() => onOpen()}
+        eager={eager}
+        className="aspect-[4/3]"
+        overlay={
+          (hit.run || d.extended) && (
+            <div className="pointer-events-none absolute top-2 left-2 flex flex-wrap gap-1">
+              {hit.run && (
+                <RunBadge
+                  run={hit.run}
+                  className="bg-background/90 shadow-sm backdrop-blur"
+                />
+              )}
+              {d.extended && (
+                <ExtendedChip className="bg-background/90 shadow-sm backdrop-blur" />
+              )}
+            </div>
+          )
+        }
+      />
+      <button
+        type="button"
+        onClick={onOpen}
+        className="flex flex-1 flex-col p-3 text-left transition-colors hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-ring"
+      >
+        <h3 className="line-clamp-2 text-[0.95rem] leading-snug font-semibold">
+          <Highlight title={d.title} matched={hit.matched} />
+        </h3>
+        <p className="mt-1 truncate text-xs text-muted-foreground">
+          {[d.location, d.auction, d.condition ?? d.category, d.cpu]
+            .filter(Boolean)
+            .join(" · ")}
+        </p>
+        <div className="mt-auto flex items-end justify-between gap-3 pt-3">
+          <PriceLines hit={hit} />
           <Countdown
             endAt={d.endAt}
             variant="pill"
             showWhen
-            className="text-sm"
+            className="shrink-0 text-sm"
           />
-          <div className="flex gap-1">
-            {hit.run && <RunBadge run={hit.run} />}
-            {d.extended && <ExtendedChip />}
-          </div>
         </div>
-      </div>
-    </button>
+      </button>
+    </article>
   );
 }
 
@@ -686,7 +712,14 @@ function BrowseSkeleton({ loading }: { loading: boolean }) {
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {Array.from({ length: 9 }, (_, i) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: static placeholders
-          <Skeleton key={i} className="h-36 rounded-2xl" />
+          <div key={i} className="overflow-hidden rounded-2xl border">
+            <Skeleton className="aspect-[4/3] rounded-none" />
+            <div className="space-y-2 p-3">
+              <Skeleton className="h-4 w-4/5" />
+              <Skeleton className="h-3 w-1/2" />
+              <Skeleton className="h-6 w-1/3" />
+            </div>
+          </div>
         ))}
       </div>
     </div>

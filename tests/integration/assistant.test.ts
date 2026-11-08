@@ -80,6 +80,7 @@ const doc = (r: LotListRow): CatalogueDoc => ({
   stc: false,
   quantity: 1,
   thumbUrl: null,
+  photos: 0,
   cpu: null,
   rates: null,
 });

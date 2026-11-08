@@ -58,6 +58,7 @@ export async function catalogueSnapshot() {
       stc: lots.stc,
       quantityN: lots.quantityN,
       thumbUrl: lots.thumbUrl,
+      photos: sql<number>`coalesce(jsonb_array_length(${lots.gallery}), 0)::int`,
       cpu: sql<string | null>`${lots.attrs}->>'cpu'`,
       levy: lots.levyRate,
       vat: lots.vatRate,
@@ -92,6 +93,7 @@ export async function catalogueSnapshot() {
     stc: r.stc,
     quantity: r.quantityN,
     thumbUrl: r.thumbUrl,
+    photos: Number(r.photos),
     cpu: r.cpu || null,
     rates:
       r.levy !== null && r.vat !== null
