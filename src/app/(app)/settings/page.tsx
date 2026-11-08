@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PageHeader } from "@/components/empty-state";
 import { PageSkeleton } from "@/components/page-skeleton";
+import { AppSignIn } from "@/components/push/app-sign-in";
 import { BidderSettings } from "@/components/push/bidder-settings";
 import { PushSettings } from "@/components/push/push-settings";
 import { requireUser } from "@/server/dal";
@@ -69,6 +70,7 @@ async function Settings() {
               Edge show an install icon in the address bar.
             </li>
           </ul>
+          <AppSignIn />
         </Section>
       </div>
     </div>

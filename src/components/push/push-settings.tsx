@@ -190,9 +190,11 @@ export function PushSettings() {
               <strong>Add to Home Screen</strong>, then Add.
             </li>
             <li>
-              Open Lotline from your Home Screen, come back here, and turn on
-              alerts.
+              Under <strong>Install Lotline</strong> below, copy a sign-in link
+              for the app. Open Lotline from your Home Screen and paste it on
+              the sign-in page.
             </li>
+            <li>In the app, come back here and turn on alerts.</li>
           </ol>
         </div>
       )}
