@@ -22,6 +22,10 @@ browser ──▶ web (Next.js 16) ──▶ Postgres ◀── worker (Node) �
 
 See `docs/abc-api.md` for what we know about the API, and `docs/adr/` for decisions.
 
+## Production
+
+Runs on Railway (web, worker, Postgres in EU West). Setup, sign-in, monitoring and the auction-night checklist: [docs/runbook.md](docs/runbook.md).
+
 ## Development
 
 Requires Node 22 and Postgres 16.
