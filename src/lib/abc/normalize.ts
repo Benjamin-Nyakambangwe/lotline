@@ -1,3 +1,4 @@
+import { nextBidAfter } from "../domain/increments";
 import { type Cents, toCents } from "../domain/money";
 import { quantityOf } from "../domain/titles";
 import type { AbcDetail, AbcListItem } from "./schemas";
@@ -13,7 +14,10 @@ export interface LotListRow {
   lotNumber: number | null;
   location: string | null;
   currency: string;
+  /** the next minimum bid (cents): the opening price until someone bids */
   startingBid: Cents | null;
+  /** the opening price (cents), when known */
+  openingBid: Cents | null;
   currentBid: Cents | null;
   /** ABC's leader bidder ID. Personal data: callers must drop it unless the lot is tracked. */
   currentBidderId: number | null;
@@ -67,7 +71,13 @@ const date = (s: string | null | undefined): Date | null => {
 const cents = (n: number | null | undefined): Cents | null =>
   n === null || n === undefined ? null : toCents(n);
 
+/**
+ * A search-listing item. Careful: the listing's StartingBid is the opening price, even after
+ * bids (the detail endpoint's StartingBid is the next bid), so the next bid comes from the ladder.
+ */
 export function normalizeListItem(x: AbcListItem): LotListRow {
+  const opening = cents(x.StartingBid);
+  const current = cents(x.CurrentBid);
   return {
     id: x.Id,
     type: x.Type ?? 1,
@@ -77,8 +87,9 @@ export function normalizeListItem(x: AbcListItem): LotListRow {
     lotNumber: x.LotNumber ?? null,
     location: x.Location ?? null,
     currency: x.Currency ?? "USD",
-    startingBid: cents(x.StartingBid),
-    currentBid: cents(x.CurrentBid),
+    startingBid: current === null ? opening : nextBidAfter(current),
+    openingBid: opening,
+    currentBid: current,
     currentBidderId: x.CurrentBidderId ?? null,
     startAt: date(x.StartDate),
     endAt: date(x.EndDate),
@@ -94,8 +105,13 @@ export function normalizeDetail(x: AbcDetail): LotDetailRow {
     .split(">")
     .map((p) => p.trim())
     .filter(Boolean);
+  const list = normalizeListItem(x);
   return {
-    ...normalizeListItem(x),
+    ...list,
+    // In detail, StartingBid really is the next minimum bid; the opening price isn't given once
+    // there are bids.
+    startingBid: cents(x.StartingBid) ?? list.startingBid,
+    openingBid: list.currentBid === null ? list.openingBid : null,
     categoryPath: parts.length ? parts.join(" > ") : null,
     category: parts[0] ?? null,
     subCategory: parts[1] ?? null,

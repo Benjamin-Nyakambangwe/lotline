@@ -4,7 +4,7 @@ import { ImageOff, Layers, RefreshCw, Timer } from "lucide-react";
 import Image from "next/image";
 import { allIn, DEFAULT_RATES, type FeeRates } from "@/lib/domain/fees";
 import { formatMoney } from "@/lib/domain/money";
-import { formatClock, formatCountdown } from "@/lib/domain/time";
+import { formatClock, formatCountdown, formatWhen } from "@/lib/domain/time";
 import { highlightParts } from "@/lib/search/engine";
 import type { RunInfo } from "@/lib/search/runs";
 import { cn } from "@/lib/utils";
@@ -39,38 +39,67 @@ export function AllIn({
   );
 }
 
-/** Live countdown. Amber under 10 minutes, red under 2; "Closing…" past the end until final. */
+/** Tone for time left: amber under 10 minutes, red under 2, amber again once past the end. */
+function toneFor(left: number, final: boolean) {
+  if (final) return "muted";
+  if (left <= 0) return "closing";
+  if (left < 120_000) return "outbid";
+  if (left < 600_000) return "closing";
+  return "normal";
+}
+const TEXT_TONE = {
+  muted: "text-muted-foreground",
+  closing: "text-closing",
+  outbid: "text-outbid",
+  normal: "",
+} as const;
+const PILL_TONE = {
+  muted: "bg-muted text-muted-foreground",
+  closing: "bg-closing-bg text-closing",
+  outbid: "bg-outbid-bg text-outbid",
+  normal: "bg-muted text-foreground",
+} as const;
+
+/**
+ * Live countdown that ticks every second. Amber under 10 minutes, red under 2; "Closing…" past
+ * the end until final. `pill` for cards, `seconds` to tick visibly even days out, `showWhen`
+ * adds "today 19:03" underneath.
+ */
 export function Countdown({
   endAt,
   final = false,
   className,
   showClock = false,
+  showWhen = false,
+  seconds = false,
+  variant = "plain",
 }: {
   endAt: string | null;
   final?: boolean;
   className?: string;
   showClock?: boolean;
+  showWhen?: boolean;
+  seconds?: boolean;
+  variant?: "plain" | "pill";
 }) {
   const now = useNow();
   if (!endAt) return null;
   const end = Date.parse(endAt);
   const left = end - (now || Date.now());
-  const tone = final
-    ? "text-muted-foreground"
-    : left <= 0
-      ? "text-closing"
-      : left < 120_000
-        ? "text-outbid"
-        : left < 600_000
-          ? "text-closing"
-          : "";
-  return (
+  const tone = toneFor(left, final);
+  const timer = (
     <span
       className={cn(
         "inline-flex items-center gap-1 tabular-nums",
-        tone,
-        className,
+        variant === "pill"
+          ? cn("rounded-full px-2 py-0.5 font-semibold", PILL_TONE[tone])
+          : TEXT_TONE[tone],
+        !showWhen && className,
       )}
+      role="timer"
+      aria-label={
+        final ? "Closed" : left <= 0 ? "Closing" : `Closes ${formatWhen(end)}`
+      }
     >
       <Timer className="size-[1em] shrink-0" aria-hidden="true" />
       {final
@@ -78,12 +107,62 @@ export function Countdown({
         : left <= 0
           ? "Closing…"
           : now
-            ? formatCountdown(left)
+            ? formatCountdown(left, { seconds })
             : "–:––"}
       {showClock && (
-        <span className="text-muted-foreground">· {formatClock(end)}</span>
+        <span className="font-normal text-muted-foreground">
+          · {formatClock(end)}
+        </span>
       )}
     </span>
+  );
+  if (!showWhen) return timer;
+  return (
+    <span className={cn("inline-flex flex-col items-end gap-0.5", className)}>
+      {timer}
+      <span className="text-[0.75rem] text-muted-foreground tabular-nums">
+        {final
+          ? formatWhen(end, now || Date.now())
+          : `closes ${formatWhen(end, now || Date.now())}`}
+      </span>
+    </span>
+  );
+}
+
+/** A big, always-ticking timer for an auction or the lot page: label, digits, and when. */
+export function BigCountdown({
+  endAt,
+  label,
+  className,
+}: {
+  endAt: string | null;
+  label: string;
+  className?: string;
+}) {
+  const now = useNow();
+  if (!endAt) return null;
+  const end = Date.parse(endAt);
+  const left = end - (now || Date.now());
+  const tone = toneFor(left, false);
+  return (
+    <div className={cn("flex flex-col", className)} role="timer">
+      <span className="text-xs font-medium text-muted-foreground">{label}</span>
+      <span
+        className={cn(
+          "text-2xl leading-tight font-semibold tracking-tight tabular-nums",
+          TEXT_TONE[tone],
+        )}
+      >
+        {left <= 0
+          ? "Closing now"
+          : now
+            ? formatCountdown(left, { seconds: true })
+            : "–:––:––"}
+      </span>
+      <span className="text-xs text-muted-foreground tabular-nums">
+        {formatWhen(end, now || Date.now())}
+      </span>
+    </div>
   );
 }
 

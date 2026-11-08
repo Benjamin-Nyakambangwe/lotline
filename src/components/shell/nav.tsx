@@ -2,6 +2,7 @@
 
 import {
   FolderKanban,
+  Gavel,
   LayoutDashboard,
   LineChart,
   type LucideIcon,
@@ -17,6 +18,7 @@ import { cn } from "@/lib/utils";
 
 export type NavIcon =
   | "dashboard"
+  | "auctions"
   | "live"
   | "browse"
   | "projects"
@@ -27,6 +29,7 @@ export type NavIcon =
 
 export const ICONS: Record<NavIcon, LucideIcon> = {
   dashboard: LayoutDashboard,
+  auctions: Gavel,
   live: Radio,
   browse: Search,
   projects: FolderKanban,
@@ -45,8 +48,9 @@ export interface NavItem {
 
 export const PRIMARY_NAV: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", short: "Home", icon: "dashboard" },
-  { href: "/watchlist", label: "Watchlist", short: "Live", icon: "live" },
+  { href: "/auctions", label: "Auctions", short: "Auctions", icon: "auctions" },
   { href: "/browse", label: "Browse", short: "Browse", icon: "browse" },
+  { href: "/watchlist", label: "Watchlist", short: "Live", icon: "live" },
   { href: "/projects", label: "Projects", short: "Projects", icon: "projects" },
   { href: "/won", label: "Won", short: "Won", icon: "won" },
   { href: "/insights", label: "Insights", short: "Insights", icon: "insights" },

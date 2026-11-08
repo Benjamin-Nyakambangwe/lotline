@@ -1,16 +1,37 @@
 import type { Cents } from "./money";
 
 /**
- * ABC's observed bid ladder: $1 steps below $10, $2 from $10 to $20, $5 from $20 to $50,
- * $10 from $50. This is a hint for steppers and "max hammer" suggestions only: the real
- * next bid is always the API's StartingBid.
+ * ABC's bid ladder, read from live lots (Nov 2026): the step depends on the current bid.
+ *   under $10: $1 · $10–20: $2 · $20–50: $5 · $50–200: $10 · $200–500: $25 ·
+ *   $500–1,000: $50 · $1,000 and up: $100
+ * Each band starts on a multiple of its step, so ladder values are band start + k × step.
  */
+const LADDER: readonly (readonly [from: Cents, step: Cents])[] = [
+  [0, 100],
+  [1000, 200],
+  [2000, 500],
+  [5000, 1000],
+  [20000, 2500],
+  [50000, 5000],
+  [100000, 10000],
+];
+
+const bandOf = (amount: Cents) => {
+  let band = LADDER[0];
+  for (const b of LADDER) if (amount >= b[0]) band = b;
+  return band;
+};
+
 export function incrementFor(amount: Cents): Cents {
-  if (amount < 1000) return 100;
-  if (amount < 2000) return 200;
-  if (amount < 5000) return 500;
-  return 1000;
+  return bandOf(amount)[1];
 }
+
+/**
+ * The next minimum bid after `current`: what ABC's lot detail calls StartingBid once a lot has
+ * bids. (ABC's search listing reports the opening price under the same name instead.)
+ */
+export const nextBidAfter = (current: Cents): Cents =>
+  current + incrementFor(current);
 
 /** The ladder step above `amount`. */
 export const ladderUp = (amount: Cents): Cents =>
@@ -28,8 +49,6 @@ export function ladderDown(amount: Cents): Cents {
 /** Largest ladder value ≤ amount (minimum $1). */
 export function snapDown(amount: Cents): Cents {
   if (amount < 100) return 100;
-  if (amount < 1000) return Math.floor(amount / 100) * 100;
-  if (amount < 2000) return 1000 + Math.floor((amount - 1000) / 200) * 200;
-  if (amount < 5000) return 2000 + Math.floor((amount - 2000) / 500) * 500;
-  return 5000 + Math.floor((amount - 5000) / 1000) * 1000;
+  const [from, step] = bandOf(amount);
+  return from + Math.floor((amount - from) / step) * step;
 }

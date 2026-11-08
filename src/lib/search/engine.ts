@@ -3,7 +3,7 @@ import MiniSearch, {
   type Query,
 } from "minisearch";
 import { parseLotRef } from "../abc/urls";
-import { localDate } from "../domain/time";
+import { addDaysToDate, localDate, startOfLocalDay } from "../domain/time";
 import { computeRuns, type RunInfo } from "./runs";
 import { processTerm, queryTerms, synonymsOf, tokenize } from "./text";
 
@@ -25,6 +25,8 @@ export interface CatalogueDoc {
   lotNumber: number | null;
   title: string;
   location: string | null;
+  /** the auction's key (its code, e.g. "HGA#288"), if known */
+  auction: string | null;
   category: string | null;
   subCategory: string | null;
   finalCategory: string | null;
@@ -48,6 +50,7 @@ export type PriceBucket = "u10" | "10-50" | "50-200" | "200-1k" | "1k+";
 export type BidsBucket = "none" | "some";
 
 export interface Filters {
+  auction?: string[];
   location?: string[];
   category?: string[];
   condition?: string[];
@@ -57,6 +60,7 @@ export interface Filters {
 }
 export type FacetName = keyof Filters;
 export const FACETS: FacetName[] = [
+  "auction",
   "category",
   "location",
   "ends",
@@ -91,20 +95,26 @@ export interface SearchResponse {
   ms: number;
 }
 
+/** Where "today" and "tomorrow" end, in the display timezone: computed once per search. */
+export function dayBounds(now: Date, tz?: string) {
+  const today = localDate(now, tz);
+  return {
+    now: now.getTime(),
+    endOfToday: startOfLocalDay(addDaysToDate(today, 1), tz),
+    endOfTomorrow: startOfLocalDay(addDaysToDate(today, 2), tz),
+  };
+}
+
 const endsBucket = (
   endAt: string | null,
-  now: Date,
-  tz?: string,
+  b: ReturnType<typeof dayBounds>,
 ): EndsBucket => {
   if (!endAt) return "later";
-  const end = new Date(endAt);
-  const left = end.getTime() - now.getTime();
+  const end = Date.parse(endAt);
+  const left = end - b.now;
   if (left <= 3600_000) return "hour";
-  const today = localDate(now, tz);
-  const day = localDate(end, tz);
-  if (day === today) return "today";
-  const tomorrow = localDate(new Date(now.getTime() + 86_400_000), tz);
-  if (day === tomorrow) return "tomorrow";
+  if (end < b.endOfToday) return "today";
+  if (end < b.endOfTomorrow) return "tomorrow";
   return left <= 7 * 86_400_000 ? "week" : "later";
 };
 
@@ -248,12 +258,14 @@ export class CatalogueSearch {
       }
     }
 
+    const bounds = dayBounds(now, this.tz);
     // Facet values per doc, computed once.
     const values = (d: CatalogueDoc): Record<FacetName, string> => ({
+      auction: d.auction ?? "Unknown",
       category: d.category ?? "Other",
       location: d.location ?? "Unknown",
       condition: d.condition ?? "Unknown",
-      ends: endsBucket(d.endAt, now, this.tz),
+      ends: endsBucket(d.endAt, bounds),
       price: priceBucket(d.startingBid ?? d.currentBid),
       bids: d.currentBid === null ? "none" : "some",
     });

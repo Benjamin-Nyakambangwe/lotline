@@ -82,6 +82,42 @@ describe("AbcClient parsing", () => {
     expect(d.status).toBe(2);
   });
 
+  it("treats a listing's StartingBid as the opening price, and detail's as the next bid", async () => {
+    const item = {
+      Id: 23561,
+      Type: 2,
+      Title: "Car",
+      CurrentBid: 3000,
+      StartingBid: 1000,
+    };
+    const { c } = client([
+      {
+        body: {
+          List: [item, { ...item, Id: 2, CurrentBid: null, StartingBid: 8 }],
+          Meta: { Count: 2, Facets: [] },
+        },
+      },
+      { body: { ...item, StartingBid: 3100 } },
+    ]);
+    const [withBids, noBids] = (await c.search({})).items;
+    expect(withBids).toMatchObject({
+      currentBid: 300000,
+      startingBid: 310000,
+      openingBid: 100000,
+    });
+    expect(noBids).toMatchObject({
+      currentBid: null,
+      startingBid: 800,
+      openingBid: 800,
+    });
+    const d = await c.detail(23561, 2);
+    expect(d).toMatchObject({
+      currentBid: 300000,
+      startingBid: 310000,
+      openingBid: null,
+    });
+  });
+
   it("accepts the { Data: ... } wrapper too", async () => {
     const { c } = client([{ body: { Data: fixture("detail-open.json") } }]);
     expect((await c.detail(800829)).id).toBe(800829);
@@ -113,6 +149,20 @@ describe("AbcClient parsing", () => {
       ids.push(...page.items.map((x) => x.id));
     expect(ids).toEqual([1, 2]);
     expect(calls[1].url).toContain("Cursor=c1");
+  });
+
+  it("stops once every counted lot has arrived, even if ABC offers another cursor", async () => {
+    const p1 = {
+      List: [
+        { Id: 1, Title: "a" },
+        { Id: 2, Title: "b" },
+      ],
+      Meta: { Count: 2, Cursor: "c1", Facets: [] },
+    };
+    const { c, calls } = client([{ body: p1 }]);
+    for await (const _ of c.searchAll({})) {
+    }
+    expect(calls).toHaveLength(1);
   });
 
   it("resolves an invoice lot number to a lot id", async () => {

@@ -38,6 +38,7 @@ function listValues(r: LotListRow, tracked: boolean, now: Date) {
     location: r.location,
     currency: r.currency,
     startingBid: centsToNumeric(r.startingBid),
+    openingBid: centsToNumeric(r.openingBid),
     currentBid: centsToNumeric(r.currentBid),
     // Privacy: the leader's bidder ID is personal data. Keep it only while someone tracks the lot.
     currentBidderId: tracked ? r.currentBidderId : null,
@@ -77,6 +78,7 @@ const listConflictSet = {
   location: sql`coalesce(excluded.location, ${lots.location})`,
   currency: sql`excluded.currency`,
   startingBid: sql`excluded.starting_bid`,
+  openingBid: sql`coalesce(excluded.opening_bid, ${lots.openingBid})`,
   currentBid: sql`excluded.current_bid`,
   currentBidderId: sql`excluded.current_bidder_id`,
   status: sql`excluded.status`,

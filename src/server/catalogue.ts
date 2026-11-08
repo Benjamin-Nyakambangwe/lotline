@@ -1,14 +1,40 @@
 import "server-only";
-import { and, desc, eq, gt, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, gt, inArray, isNull, sql } from "drizzle-orm";
 import * as schema from "@/lib/db/schema";
+import { auctionKey, parseAuctionName } from "@/lib/domain/auctions";
 import { parseCents } from "@/lib/domain/money";
-import type { LotView } from "@/lib/lot-view";
+import type { AuctionInfo, LotView } from "@/lib/lot-view";
 import type { CatalogueDoc } from "@/lib/search/engine";
 import { getDb } from "./db";
 
 const { lots } = schema;
 const num = (v: string | null) => (v === null ? null : Number(v));
 const iso = (d: Date | null) => (d ? d.toISOString() : null);
+
+/** Auctions by id, as the app shows them. */
+async function auctionsById(ids: number[]): Promise<Map<number, AuctionInfo>> {
+  if (!ids.length) return new Map();
+  const rows = await getDb()
+    .select({
+      id: schema.campaigns.id,
+      name: schema.campaigns.name,
+      code: schema.campaigns.code,
+      location: schema.campaigns.location,
+    })
+    .from(schema.campaigns)
+    .where(inArray(schema.campaigns.id, ids));
+  return new Map(
+    rows.map((r) => [
+      r.id,
+      {
+        key: auctionKey(r),
+        title: parseAuctionName(r.name).title,
+        code: r.code,
+        location: r.location,
+      },
+    ]),
+  );
+}
 
 /** Open lots (plus any that closed in the last 30 minutes) for the in-browser search index. */
 export async function catalogueSnapshot() {
@@ -20,6 +46,7 @@ export async function catalogueSnapshot() {
       lotNumber: lots.lotNumber,
       title: lots.title,
       location: lots.location,
+      campaignId: lots.campaignId,
       category: lots.category,
       subCategory: lots.subCategory,
       finalCategory: lots.finalCategory,
@@ -44,12 +71,16 @@ export async function catalogueSnapshot() {
       ),
     );
 
+  const auctions = await auctionsById([
+    ...new Set(rows.flatMap((r) => (r.campaignId ? [r.campaignId] : []))),
+  ]);
   const docs: CatalogueDoc[] = rows.map((r) => ({
     id: r.id,
     type: r.type,
     lotNumber: r.lotNumber,
     title: r.title,
     location: r.location,
+    auction: r.campaignId ? (auctions.get(r.campaignId)?.key ?? null) : null,
     category: r.category,
     subCategory: r.subCategory,
     finalCategory: r.finalCategory,
@@ -84,6 +115,7 @@ export async function catalogueSnapshot() {
     now: new Date().toISOString(),
     syncedAt: iso(sync?.at ?? null),
     count: docs.length,
+    auctions: [...auctions.values()],
     lots: docs,
   };
 }
@@ -110,6 +142,7 @@ export async function getLotView(id: number): Promise<LotView | null> {
       photoUrl: lots.photoUrl,
       location: lots.location,
       sublocation: lots.sublocation,
+      campaignId: lots.campaignId,
       categoryPath: lots.categoryPath,
       category: lots.category,
       condition: lots.condition,
@@ -146,8 +179,13 @@ export async function getLotView(id: number): Promise<LotView | null> {
     .limit(1);
   if (!r) return null;
   const known = r.levy !== null && r.vat !== null;
+  const { campaignId, ...rest } = r;
+  const auction = campaignId
+    ? ((await auctionsById([campaignId])).get(campaignId) ?? null)
+    : null;
   return {
-    ...r,
+    ...rest,
+    auction,
     currentBid: parseCents(r.currentBid),
     startingBid: parseCents(r.startingBid),
     finalPrice: parseCents(r.finalPrice),

@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { dealRating, summarize } from "@/lib/domain/deal";
 import { defaultPayBy } from "@/lib/domain/payby";
-import { formatClock, formatCountdown, localDate } from "@/lib/domain/time";
+import {
+  formatClock,
+  formatCountdown,
+  formatWhen,
+  localDate,
+} from "@/lib/domain/time";
 import {
   cpuOf,
   extractAttrs,
@@ -23,7 +28,25 @@ describe("time", () => {
     expect(formatCountdown(3_912_000)).toBe("1:05:12");
     expect(formatCountdown(545_000)).toBe("9:05");
     expect(formatCountdown(-5)).toBe("0:00");
-    expect(formatCountdown((4 * 86_400 + 3600 + 5) * 1000)).toBe("4d 1h");
+    expect(formatCountdown((4 * 86_400 + 3600 + 300 + 5) * 1000)).toBe(
+      "4d 1h 05m",
+    );
+    expect(
+      formatCountdown((4 * 86_400 + 3600 + 300 + 5) * 1000, { seconds: true }),
+    ).toBe("4d 01:05:05");
+    expect(formatCountdown(3_912_000, { seconds: true })).toBe("1:05:12");
+  });
+  it("says when, relative to today in Harare", () => {
+    const now = new Date("2026-11-07T18:00:00Z"); // Sat 20:00 CAT
+    expect(formatWhen(new Date("2026-11-07T19:30:00Z"), now)).toBe(
+      "today 21:30",
+    );
+    expect(formatWhen(new Date("2026-11-07T22:30:00Z"), now)).toBe(
+      "tomorrow 00:30",
+    );
+    expect(formatWhen(new Date("2026-11-10T17:00:00Z"), now)).toBe(
+      "Tue 10 Nov 19:00",
+    );
   });
   it("shows clock times in Harare", () => {
     expect(formatClock(new Date("2026-11-06T17:36:40Z"))).toBe("Fri 19:36");

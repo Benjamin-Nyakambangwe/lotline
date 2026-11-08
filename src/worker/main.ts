@@ -8,6 +8,7 @@
  * Loops (leader only):
  *  - catalogue   full "Available" sync every 10 min by day, 30 min at night
  *  - categories  tag every open lot with its category (~12 requests) every hour
+ *  - auctions    find every auction on sale and tag its lots (~20 requests) every 30 min
  *  - sold        sweep sold lots into market insights every 3 h
  *  - enrich      one lot detail every few seconds until every lot has one, then lots that
  *                ended without us seeing the result, then sold lots for market insights
@@ -24,6 +25,7 @@ import { createDb } from "@/lib/db/client";
 import { workerHeartbeat } from "@/lib/db/schema";
 import { loadConfig } from "./config";
 import { type HealthState, startHealthServer } from "./health";
+import { syncAuctions } from "./jobs/auctions";
 import { sweepSold, syncCatalogue, tagCategories } from "./jobs/catalogue";
 import {
   drainFetchRequests,
@@ -172,6 +174,15 @@ async function main() {
           return 60 * MIN;
         },
         errorDelayMs: 10 * MIN,
+      },
+      {
+        name: "auctions",
+        initialDelayMs: 15_000,
+        run: async () => {
+          await syncAuctions(db, abc, log);
+          return 30 * MIN;
+        },
+        errorDelayMs: 5 * MIN,
       },
       {
         name: "sold",

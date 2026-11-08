@@ -19,7 +19,7 @@ import {
  * The signed-in frame. Static so it prerenders instantly; user-specific bits arrive
  * through slots that the server streams in behind Suspense boundaries.
  *  - desktop (≥1024px): sidebar
- *  - phone: top bar + bottom tabs (Home, Live, Browse, Projects, More)
+ *  - phone: top bar + bottom tabs (Home, Auctions, Browse, Live, More)
  */
 export function AppShell({
   children,

@@ -85,6 +85,11 @@ Sampled 16 details across 8 categories.
 
 ## Decisions
 
+- **`StartingBid` means two different things** (found 8 Nov 2026). In search listings it is the *opening price*, even after bids (lot 23561: CurrentBid 3000, StartingBid 1000). In lot detail it is the *next minimum bid* (same lot: 3000 → 3100). Lotline stores the listing value as `opening_bid` and computes the next bid from the ladder below, which matches detail on every lot sampled.
+- **Bid ladder** (26 live lots, every band): under $10 +$1 · $10–20 +$2 · $20–50 +$5 · $50–200 +$10 · $200–500 +$25 · $500–1,000 +$50 · $1,000+ +$100.
+- **Sold history:** search lists only about two weeks of sold lots, and not all of those (lot 797002, sold 3 Nov, never appeared). Detail still serves old lots by ID; nearly every ID is a lot, and ABC answers HTTP 400 for IDs that don't exist. Goods (type 1) and vehicles (type 2) are separate ID ranges, and asking for an ID with the wrong type returns a different lot. IDs run roughly in time order (~804k in Nov 2026, ~650k in Nov 2025), but relisted lots can close long after their ID was issued.
+- **Auctions** ("campaigns", e.g. "Harare Goods Auction - HGA#288") are only in the `campaign` search facet, never on a lot. Facets list at most 10 values, so finding every auction means splitting queries (by location, lot type, category). Lot numbers don't encode the auction. An auction's lots close in a run, usually from 19:00 Harare about 20 s apart, and ended lots stay "Available" for a while.
+- Paged searches return a cursor even on the last page; stop when the items received reach `Meta.Count`.
 - Status codes seen: 0 = pending (not started), 1 = open, 2 = closed with a sale, 3 = ended with no bids (passed; still listed as "Available" during the offer window).
 - Open means `Status == 1 && end_at > now`; "Available" alone is not enough.
 - Page size up to 500 works: a full Available sync is ~5 requests. Use Size=500 for sync and sweeps.

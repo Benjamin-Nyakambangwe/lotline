@@ -155,9 +155,13 @@ export class AbcClient {
   ) {
     let cursor = params.cursor ?? null;
     const seen = new Set<string>();
+    let got = 0;
     for (let page = 0; page < maxPages; page++) {
       const res = await this.search({ ...params, cursor }, priority);
       yield res;
+      got += res.items.length + res.invalid;
+      // ABC hands out a cursor even on the last page: stop once every counted lot has arrived.
+      if (got >= res.count) return;
       if (!res.cursor || res.items.length === 0 || seen.has(res.cursor)) return;
       seen.add(res.cursor);
       cursor = res.cursor;

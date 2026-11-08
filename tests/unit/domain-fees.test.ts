@@ -11,6 +11,7 @@ import {
   incrementFor,
   ladderDown,
   ladderUp,
+  nextBidAfter,
   snapDown,
 } from "@/lib/domain/increments";
 import { formatMoney, parseCents, toCents } from "@/lib/domain/money";
@@ -63,6 +64,32 @@ describe("fees", () => {
 });
 
 describe("bid ladder", () => {
+  it("matches ABC's live next bids in every band (current → next, in dollars)", () => {
+    // Read from 26 open lots' detail on 8 Nov 2026.
+    const seen: [number, number][] = [
+      [2, 3],
+      [9, 10],
+      [10, 12],
+      [25, 30],
+      [45, 50],
+      [50, 60],
+      [170, 180],
+      [225, 250],
+      [450, 475],
+      [500, 550],
+      [750, 800],
+      [1000, 1100],
+      [2200, 2300],
+      [14500, 14600],
+    ];
+    for (const [cur, next] of seen)
+      expect(nextBidAfter(cur * 100)).toBe(next * 100);
+  });
+  it("snaps to the ladder in the upper bands too", () => {
+    expect([21000, 23000, 52000, 99000, 123456].map(snapDown)).toEqual([
+      20000, 22500, 50000, 95000, 120000,
+    ]);
+  });
   it("knows the increments", () => {
     expect([900, 1000, 1900, 2000, 4900, 5000, 9000].map(incrementFor)).toEqual(
       [100, 200, 200, 500, 500, 1000, 1000],

@@ -12,6 +12,7 @@ export interface LotView {
   photoUrl: string | null;
   location: string | null;
   sublocation: string | null;
+  auction: AuctionInfo | null;
   categoryPath: string | null;
   category: string | null;
   condition: string | null;
@@ -49,9 +50,21 @@ export interface LotResponse {
   refreshing: boolean;
 }
 
+/** An auction (ABC "campaign") as the app shows it. */
+export interface AuctionInfo {
+  /** URL-safe key: the code ("HGA#288"), else the name */
+  key: string;
+  /** "Harare Goods Auction" */
+  title: string;
+  code: string | null;
+  location: string | null;
+}
+
 export interface CatalogueResponse {
   now: string;
   syncedAt: string | null;
   count: number;
+  /** auctions with lots in this catalogue, for labels */
+  auctions: AuctionInfo[];
   lots: import("./search/engine").CatalogueDoc[];
 }

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   type CatalogueDoc,
   CatalogueSearch,
+  dayBounds,
   highlightParts,
 } from "@/lib/search/engine";
 import { computeRuns, runKey } from "@/lib/search/runs";
@@ -14,6 +15,7 @@ const doc = (title: string, o: Partial<CatalogueDoc> = {}): CatalogueDoc => ({
   lotNumber: null,
   title,
   location: "Harare",
+  auction: null,
   category: "Electronics",
   subCategory: null,
   finalCategory: null,
@@ -143,6 +145,48 @@ describe("facets", () => {
         .search({ q: "", now: NOW, filters: { price: ["50-200"] } })
         .hits.map((h) => h.doc.title),
     ).toEqual(["Dell OptiPlex 7070 Micro PC", "Defy Refrigerator 300L"]);
+  });
+
+  it("splits 'today' and 'tomorrow' at midnight in Harare", () => {
+    const now = new Date("2026-11-06T21:30:00Z"); // Fri 23:30 in Harare
+    const e = new CatalogueSearch(
+      [
+        doc("a", { endAt: "2026-11-07T00:00:00Z" }), // Sat 02:00
+        doc("b", { endAt: "2026-11-07T21:59:00Z" }), // Sat 23:59
+        doc("c", { endAt: "2026-11-07T22:01:00Z" }), // Sun 00:01
+      ],
+      "Africa/Harare",
+    );
+    const ends = Object.fromEntries(
+      e.search({ q: "", now }).facets.ends.map((b) => [b.value, b.count]),
+    );
+    expect(ends).toEqual({ tomorrow: 2, week: 1 });
+    expect(dayBounds(now, "Africa/Harare").endOfToday).toBe(
+      Date.parse("2026-11-06T22:00:00Z"),
+    );
+  });
+
+  it("filters by auction", () => {
+    const e = new CatalogueSearch(
+      [
+        doc("Office chair", { auction: "HGA#288" }),
+        doc("Office desk", { auction: "HGA#288" }),
+        doc("Office chair, red", { auction: "BGA#240", location: "Bulawayo" }),
+      ],
+      "Africa/Harare",
+    );
+    const r = e.search({
+      q: "office",
+      now: NOW,
+      filters: { auction: ["HGA#288"] },
+    });
+    expect(r.hits.map((h) => h.doc.title).sort()).toEqual([
+      "Office chair",
+      "Office desk",
+    ]);
+    expect(
+      Object.fromEntries(r.facets.auction.map((b) => [b.value, b.count])),
+    ).toEqual({ "HGA#288": 2, "BGA#240": 1 });
   });
 });
 

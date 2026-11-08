@@ -4,6 +4,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ExternalLink,
+  Gavel,
   Images,
   Info,
   Layers,
@@ -12,6 +13,7 @@ import {
   Truck,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -30,6 +32,7 @@ import type { RunInfo } from "@/lib/search/runs";
 import { cn } from "@/lib/utils";
 import {
   AllIn,
+  BigCountdown,
   Countdown,
   ExtendedChip,
   LotThumb,
@@ -104,6 +107,16 @@ export function LotDetail({
                 {b.location}
               </span>
             )}
+            {lot?.auction && (
+              <Link
+                href={`/browse?auction=${encodeURIComponent(lot.auction.key)}&sort=ending`}
+                className="inline-flex items-center gap-1 rounded-full bg-primary/12 px-2 py-0.5 text-primary hover:bg-primary/20"
+                title={`See every lot in ${lot.auction.title}`}
+              >
+                <Gavel className="size-3" aria-hidden="true" />
+                {lot.auction.code ?? lot.auction.title}
+              </Link>
+            )}
             {lot?.condition && (
               <span className="rounded-full bg-muted px-2 py-0.5">
                 {lot.condition}
@@ -138,12 +151,16 @@ export function LotDetail({
         className="rounded-2xl border bg-surface-2/60 p-4"
       >
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <Countdown
-            endAt={b.endAt}
-            final={final}
-            showClock
-            className="text-base font-semibold"
-          />
+          {final ? (
+            <Countdown
+              endAt={b.endAt}
+              final
+              showClock
+              className="text-base font-semibold"
+            />
+          ) : (
+            <BigCountdown endAt={b.endAt} label="Closes in" />
+          )}
           <div className="flex gap-1.5">
             {extended && <ExtendedChip />}
             {run && <RunBadge run={run} />}

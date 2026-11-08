@@ -3,6 +3,7 @@
 import {
   ArrowRight,
   ChevronDown,
+  Gavel,
   LayoutGrid,
   List,
   Search,
@@ -36,12 +37,15 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { formatMoney } from "@/lib/domain/money";
-import { formatTime } from "@/lib/domain/time";
+import { formatTime, formatWhen } from "@/lib/domain/time";
+import type { AuctionInfo } from "@/lib/lot-view";
 import type { FacetName, Filters, Hit, SortKey } from "@/lib/search/engine";
 import { cn } from "@/lib/utils";
 import { useCatalogue } from "../catalogue/catalogue-provider";
+import { LocationSwitch, readLocationPref } from "../location/location-switch";
 import {
   AllIn,
+  BigCountdown,
   Countdown,
   ExtendedChip,
   Highlight,
@@ -49,6 +53,7 @@ import {
   RunBadge,
   ratesOf,
 } from "../lot/bits";
+import { useNow } from "../time/ticker";
 
 const ENDS = ["hour", "today", "tomorrow", "week", "later"] as const;
 const PRICES = ["u10", "10-50", "50-200", "200-1k", "1k+"] as const;
@@ -79,6 +84,7 @@ const LABELS: Record<string, Record<string, string>> = {
   bids: { none: "No bids yet", some: "Has bids" },
 };
 const FACET_TITLE: Record<FacetName, string> = {
+  auction: "Auction",
   category: "Category",
   location: "Location",
   ends: "Closes",
@@ -110,6 +116,7 @@ export function BrowseClient() {
   const [state, setState] = useQueryStates(
     {
       q: parseAsString.withDefault(""),
+      auction: parseAsArrayOf(parseAsString).withDefault([]),
       category: parseAsArrayOf(parseAsString).withDefault([]),
       location: parseAsArrayOf(parseAsString).withDefault([]),
       condition: parseAsArrayOf(parseAsString).withDefault([]),
@@ -130,6 +137,7 @@ export function BrowseClient() {
   }, [input, state.q, setState]);
 
   const filters: Filters = {
+    auction: state.auction,
     category: state.category,
     location: state.location,
     condition: state.condition,
@@ -183,10 +191,32 @@ export function BrowseClient() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const activeCount = Object.values(filters).reduce(
-    (a, v) => a + (v?.length ?? 0),
+  const activeCount = Object.entries(filters).reduce(
+    (a, [k, v]) => a + (k === "location" ? 0 : (v?.length ?? 0)),
     0,
   );
+
+  // Start from the location this viewer chose last time, unless the link says otherwise.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: once, on arrival
+  useEffect(() => {
+    const pref = readLocationPref();
+    if (pref && !state.location.length && !state.auction.length)
+      void setState({ location: [pref] });
+  }, []);
+  const location = state.location.length === 1 ? state.location[0] : null;
+
+  const auctions = useMemo(
+    () => new Map((data?.auctions ?? []).map((a) => [a.key, a])),
+    [data?.auctions],
+  );
+  const auctionLabel = (key: string) => {
+    const a = auctions.get(key);
+    return key === "Unknown"
+      ? "Not yet known"
+      : a
+        ? `${a.code ?? ""} ${a.title}`.trim()
+        : key;
+  };
   const toggle = (facet: FacetName, value: string) => {
     const cur = (filters[facet] ?? []) as string[];
     const next = cur.includes(value)
@@ -198,8 +228,8 @@ export function BrowseClient() {
   };
   const clearAll = () =>
     void setState({
+      auction: null,
       category: null,
-      location: null,
       condition: null,
       ends: null,
       price: null,
@@ -255,14 +285,26 @@ export function BrowseClient() {
           )}
         </div>
 
-        <div className="mt-3 flex items-center gap-2">
+        <div className="mt-3 flex items-center gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none]">
+          <LocationSwitch
+            value={location}
+            onChange={(v) => void setState({ location: v ? [v] : null })}
+            counts={
+              result
+                ? new Map(result.facets.location.map((b) => [b.value, b.count]))
+                : undefined
+            }
+          />
+        </div>
+
+        <div className="mt-2 flex items-center gap-2">
           <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none]">
             {(
               [
+                "auction",
                 "category",
                 "ends",
                 "price",
-                "location",
                 "condition",
                 "bids",
               ] as FacetName[]
@@ -270,6 +312,7 @@ export function BrowseClient() {
               <FacetChip
                 key={f}
                 facet={f}
+                labelOf={f === "auction" ? auctionLabel : undefined}
                 selected={(filters[f] ?? []) as string[]}
                 buckets={result?.facets[f] ?? []}
                 onToggle={(v) => toggle(f, v)}
@@ -346,6 +389,15 @@ export function BrowseClient() {
             )}
           </div>
 
+          {state.auction.length === 1 && data && (
+            <AuctionBanner
+              info={auctions.get(state.auction[0]) ?? null}
+              auctionKey={state.auction[0]}
+              docs={data.lots}
+              onClear={() => void setState({ auction: null })}
+            />
+          )}
+
           {result.jump && (
             <button
               type="button"
@@ -414,8 +466,10 @@ function FacetChip({
   buckets,
   onToggle,
   onClear,
+  labelOf,
 }: {
   facet: FacetName;
+  labelOf?: (v: string) => string;
   selected: string[];
   buckets: { value: string; count: number }[];
   onToggle: (v: string) => void;
@@ -426,7 +480,7 @@ function FacetChip({
   const values = order
     ? order.filter((v) => counts.has(v) || selected.includes(v))
     : [...new Set([...selected, ...buckets.map((b) => b.value)])];
-  const label = (v: string) => LABELS[facet]?.[v] ?? v;
+  const label = (v: string) => labelOf?.(v) ?? LABELS[facet]?.[v] ?? v;
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -566,7 +620,7 @@ function ResultCard({ hit, onOpen }: { hit: Hit; onOpen: () => void }) {
             <Highlight title={d.title} matched={hit.matched} />
           </h3>
           <p className="mt-1 truncate text-xs text-muted-foreground">
-            {[d.location, d.condition ?? d.category, d.cpu]
+            {[d.location, d.auction, d.condition ?? d.category, d.cpu]
               .filter(Boolean)
               .join(" · ")}
           </p>
@@ -575,7 +629,12 @@ function ResultCard({ hit, onOpen }: { hit: Hit; onOpen: () => void }) {
       <div className="mt-3 flex items-end justify-between gap-3">
         <PriceLines hit={hit} />
         <div className="flex shrink-0 flex-col items-end gap-1 text-xs">
-          <Countdown endAt={d.endAt} className="text-sm font-medium" />
+          <Countdown
+            endAt={d.endAt}
+            variant="pill"
+            showWhen
+            className="text-sm"
+          />
           <div className="flex gap-1">
             {hit.run && <RunBadge run={hit.run} />}
             {d.extended && <ExtendedChip />}
@@ -609,7 +668,11 @@ function ResultRow({ hit, onOpen }: { hit: Hit; onOpen: () => void }) {
       <span className="w-20 text-right text-sm font-semibold tabular-nums">
         {formatMoney(d.currentBid ?? d.startingBid)}
       </span>
-      <Countdown endAt={d.endAt} className="w-20 justify-end text-xs" />
+      <Countdown
+        endAt={d.endAt}
+        variant="pill"
+        className="shrink-0 justify-end text-xs"
+      />
     </button>
   );
 }
@@ -627,5 +690,90 @@ function BrowseSkeleton({ loading }: { loading: boolean }) {
         ))}
       </div>
     </div>
+  );
+}
+
+/** The auction being browsed: what it is, where, and a live countdown to its next close. */
+function AuctionBanner({
+  info,
+  auctionKey,
+  docs,
+  onClear,
+}: {
+  info: AuctionInfo | null;
+  auctionKey: string;
+  docs: Hit["doc"][];
+  onClear: () => void;
+}) {
+  const ends = docs
+    .filter((d) => d.auction === auctionKey && d.endAt)
+    .map((d) => Date.parse(d.endAt as string))
+    .sort((a, b) => a - b);
+  const ticked = useNow();
+  const now = ticked || Date.now();
+  const next = ends.find((e) => e > now) ?? null;
+  const open = ends.filter((e) => e > now).length;
+  const first = ends[0];
+  const last = ends.at(-1);
+  return (
+    <section
+      aria-label="Auction"
+      className="relative overflow-hidden rounded-2xl border bg-card p-4"
+    >
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-chart-1/10" />
+      <div className="relative flex flex-wrap items-start justify-between gap-4">
+        <div className="min-w-0">
+          <p className="flex items-center gap-2 text-xs font-medium text-primary">
+            <Gavel className="size-3.5" aria-hidden="true" />
+            {info?.code ?? "Auction"}
+            {info?.location && (
+              <span className="text-muted-foreground">· {info.location}</span>
+            )}
+          </p>
+          <h2 className="mt-1 text-lg font-semibold">
+            {info?.title ?? auctionKey}
+          </h2>
+          <p className="mt-0.5 text-sm text-muted-foreground tabular-nums">
+            {open.toLocaleString()} {open === 1 ? "lot" : "lots"} open
+            {first && last && (
+              <>
+                {" "}
+                · closing {formatWhen(first)}
+                {last - first > 60_000 && (
+                  <>
+                    {" "}
+                    →{" "}
+                    {formatWhen(last).replace(
+                      /^(today|tomorrow|yesterday) /,
+                      "",
+                    )}
+                  </>
+                )}
+              </>
+            )}
+          </p>
+        </div>
+        <div className="flex items-start gap-3">
+          {next && (
+            <BigCountdown
+              endAt={new Date(next).toISOString()}
+              label={
+                next === first ? "First lot closes in" : "Next lot closes in"
+              }
+              className="text-right"
+            />
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            onClick={onClear}
+            aria-label="Show all auctions"
+          >
+            <X />
+          </Button>
+        </div>
+      </div>
+    </section>
   );
 }

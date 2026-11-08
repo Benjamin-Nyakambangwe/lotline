@@ -152,6 +152,8 @@ export const lots = pgTable(
     currency: text("currency").notNull().default("USD"),
     /** ABC StartingBid: the next minimum bid */
     startingBid: money("starting_bid"),
+    /** the opening price (ABC search listings report it as StartingBid) */
+    openingBid: money("opening_bid"),
     currentBid: money("current_bid"),
     /** stored only while some user tracks this lot */
     currentBidderId: integer("current_bidder_id"),

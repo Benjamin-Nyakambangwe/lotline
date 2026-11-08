@@ -73,6 +73,7 @@ const listRow = (id: number, over: Partial<LotListRow> = {}): LotListRow => ({
   location: "Harare",
   currency: "USD",
   startingBid: 3500,
+  openingBid: 1000,
   currentBid: 3000,
   currentBidderId: null,
   startAt: null,

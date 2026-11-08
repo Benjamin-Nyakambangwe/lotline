@@ -45,7 +45,7 @@ export async function upsertClosedFromList(
             finalHammer: centsToNumeric(hammer),
             unitPrice: centsToNumeric(hammer),
             allIn: hammer === null ? null : centsToNumeric(allIn(hammer)),
-            openingBid: null,
+            openingBid: centsToNumeric(r.openingBid),
             hadBids: hammer !== null,
             stc: r.stc,
             closedAt: end,
@@ -96,10 +96,12 @@ export async function enrichClosedFromLots(db: AnyDb) {
       closed_at        = coalesce(cp.closed_at, l.end_at),
       closed_at_approx = case when cp.closed_at is null and l.end_at is not null then false else cp.closed_at_approx end,
       extensions       = coalesce(cp.extensions, l.extensions_count),
+      opening_bid      = coalesce(cp.opening_bid, l.opening_bid),
+      campaign         = coalesce(cp.campaign, (select c.name from campaigns c where c.id = l.campaign_id)),
       updated_at = now()
     from lots l
     where l.id = cp.lot_id
-      and (cp.category is null or cp.closed_at is null or cp.quantity_n <> greatest(l.quantity_n, 1)
+      and (cp.category is null or cp.closed_at is null or (cp.campaign is null and l.campaign_id is not null) or cp.quantity_n <> greatest(l.quantity_n, 1)
            or (l.levy_rate is not null and cp.final_hammer is not null))
   `);
 }
