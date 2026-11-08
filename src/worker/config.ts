@@ -37,6 +37,10 @@ const schema = z.object({
   HISTORY_DAILY_MAX: z.coerce.number().int().min(0).default(22_000),
   /** always leave this much of ABC_DAILY_CAP for live use */
   HISTORY_RESERVE: z.coerce.number().int().min(0).default(15_000),
+  /** Web Push (VAPID). Without them alerts stay in-app only. Subject: the app's https URL. */
+  VAPID_PUBLIC_KEY: z.string().optional(),
+  VAPID_PRIVATE_KEY: z.string().optional(),
+  VAPID_SUBJECT: z.string().optional(),
   DISPLAY_TZ: z.string().default("Africa/Harare"),
   LOG_LEVEL: z
     .enum(["fatal", "error", "warn", "info", "debug", "trace"])

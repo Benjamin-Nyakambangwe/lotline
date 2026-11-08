@@ -15,6 +15,7 @@
  *  - history     the 12-month backfill of past lots, one gentle request at a time (resumes)
  *  - requests    the web app's on-demand fetches (LISTEN lotline_fetch + 2 s poll)
  *  - track       watched lots, read more often near the close (8 s when hot); status + alerts
+ *  - push        new alerts to people's phones (Web Push), within a couple of seconds
  *  - heartbeat   worker_heartbeat row + /healthz freshness
  */
 import { randomBytes } from "node:crypto";
@@ -38,6 +39,7 @@ import {
   historyStep,
   initialHistoryState,
 } from "./jobs/history";
+import { pushStep, webPushSender } from "./jobs/push";
 import { trackStep } from "./jobs/track";
 import { Leader } from "./leader";
 import { createLogger } from "./log";
@@ -129,6 +131,9 @@ async function main() {
   });
 
   const history: HistoryState = initialHistoryState();
+  const push = webPushSender(cfg);
+  if (!push)
+    log.warn("VAPID keys not set: alerts stay in-app (no push to phones)");
   const health: HealthState = {
     role: "starting",
     instanceId,
@@ -223,9 +228,23 @@ async function main() {
       {
         name: "track",
         initialDelayMs: 3_000,
-        run: () => trackStep(db, abc, log),
+        run: async () => {
+          const delay = await trackStep(db, abc, log);
+          loops.wake("push");
+          return delay;
+        },
         errorDelayMs: 5_000,
       },
+      ...(push
+        ? [
+            {
+              name: "push",
+              initialDelayMs: 4_000,
+              run: () => pushStep(db, push, log),
+              errorDelayMs: 5_000,
+            },
+          ]
+        : []),
       {
         name: "requests",
         run: async () => {

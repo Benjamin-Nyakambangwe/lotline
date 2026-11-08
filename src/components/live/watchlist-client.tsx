@@ -2,6 +2,7 @@
 
 import {
   BadgeCheck,
+  BellRing,
   CircleAlert,
   ExternalLink,
   Eye,
@@ -114,6 +115,11 @@ export function WatchlistClient() {
         description="Your lots, live. Statuses update every few seconds as lots near their close."
         actions={
           <div className="flex items-center gap-1">
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/settings#alerts">
+                <BellRing /> Phone alerts
+              </Link>
+            </Button>
             <Button
               variant={sound ? "secondary" : "ghost"}
               size="sm"

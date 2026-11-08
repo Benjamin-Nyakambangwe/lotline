@@ -15,6 +15,16 @@ export const metadata: Metadata = {
   title: { default: "Lotline", template: "%s · Lotline" },
   description:
     "Know your line on every lot. An independent dashboard for ABC Auctions bidders.",
+  applicationName: "Lotline",
+  appleWebApp: {
+    capable: true,
+    title: "Lotline",
+    statusBarStyle: "black-translucent",
+  },
+  icons: {
+    icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
+  },
   // Private, invite-only app: keep it out of search engines.
   robots: { index: false, follow: false },
 };
