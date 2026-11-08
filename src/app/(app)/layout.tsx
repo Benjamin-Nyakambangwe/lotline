@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { AssistantLauncher } from "@/components/assistant/assistant-launcher";
 import { CommandMenu } from "@/components/command/command-menu";
 import { LotOverlay } from "@/components/lot/lot-overlay";
 import { AppProviders } from "@/components/providers";
@@ -44,6 +45,7 @@ export default function AppLayout({ children }: LayoutProps<"/">) {
       <Suspense fallback={null}>
         <LotOverlay />
         <CommandMenu />
+        <AssistantLauncher />
       </Suspense>
     </AppProviders>
   );

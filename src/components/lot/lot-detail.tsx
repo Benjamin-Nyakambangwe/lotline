@@ -31,6 +31,7 @@ import type { LotView } from "@/lib/lot-view";
 import type { CatalogueDoc } from "@/lib/search/engine";
 import type { RunInfo } from "@/lib/search/runs";
 import { cn } from "@/lib/utils";
+import { useAssistantChat } from "../assistant/chat-provider";
 import { LotPlan } from "../live/lot-plan";
 import { WatchButton } from "../live/watch-button";
 import {
@@ -231,14 +232,7 @@ export function LotDetail({
             </a>
           </Button>
           <WatchButton lotId={b.id} />
-          <Button asChild size="lg" variant="outline" className="h-11">
-            <Link
-              aria-label="Ask Lotline about this lot"
-              href={`/assistant?q=${encodeURIComponent(`Is lot ${b.id} (${b.title}) worth bidding on? What should my max be?`)}`}
-            >
-              <Sparkles /> Ask
-            </Link>
-          </Button>
+          <AskAboutLot id={b.id} title={b.title} />
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
           {refreshing
@@ -581,5 +575,25 @@ function DetailSkeleton() {
       <div className="h-24 animate-pulse rounded-2xl bg-muted" />
       <div className="h-40 animate-pulse rounded-2xl bg-muted" />
     </div>
+  );
+}
+
+/** Ask Lotline about this lot: opens the assistant with the question ready to send. */
+function AskAboutLot({ id, title }: { id: number; title: string }) {
+  const chat = useAssistantChat();
+  return (
+    <Button
+      size="lg"
+      variant="outline"
+      className="h-11"
+      aria-label="Ask Lotline about this lot"
+      onClick={() =>
+        chat.ask(
+          `Is lot ${id} (${title}) worth bidding on? What should my max be?`,
+        )
+      }
+    >
+      <Sparkles /> Ask
+    </Button>
   );
 }

@@ -62,12 +62,66 @@ test("ask the assistant: it streams an answer with lot links and a watch to conf
   await expect(page.getByText("Done")).toBeVisible();
 });
 
-test("a lot's Ask button starts a question about it", async ({ page }) => {
+test("a lot's Ask button opens the assistant with a question about it", async ({
+  page,
+}) => {
   await page.goto("/browse?q=optiplex");
   await page.locator("main button h3").first().click();
-  await page.getByRole("link", { name: "Ask Lotline about this lot" }).click();
-  await expect(page).toHaveURL(/\/assistant/);
-  await expect(page.getByRole("textbox", { name: "Ask Lotline" })).toHaveValue(
+  await page
+    .getByRole("button", { name: "Ask Lotline about this lot" })
+    .click();
+  const panel = page.locator("section[aria-label='Ask Lotline']");
+  await expect(panel).toBeVisible();
+  await expect(panel.getByRole("textbox", { name: "Ask Lotline" })).toHaveValue(
     /Is lot \d+ .* worth bidding on/,
+  );
+});
+
+test("ask from anywhere: the floating button opens the chat in place, and it keeps going", async ({
+  page,
+}, info) => {
+  await page.goto("/browse");
+  const fab = page.getByRole("button", { name: "Ask Lotline" });
+  await expect(fab).toBeVisible({ timeout: 15_000 });
+  await fab.click();
+  const panel = page.locator("section[aria-label='Ask Lotline']");
+  await expect(panel).toBeVisible();
+  // Never the whole screen on a phone (on wider screens it's a docked card).
+  if (info.project.name === "phone") {
+    const box = await panel.boundingBox();
+    const vh = page.viewportSize()?.height ?? 0;
+    expect(box?.height ?? 0).toBeLessThanOrEqual(vh * 0.7 + 2);
+  }
+
+  const input = panel.getByRole("textbox", { name: "Ask Lotline" });
+  await input.fill("Find me an OptiPlex");
+  await input.press("Enter");
+  const link = panel.getByRole("link", { name: /optiplex/i }).first();
+  await expect(link).toBeVisible({ timeout: 20_000 });
+  if (process.env.E2E_SCREENSHOTS)
+    await page.screenshot({
+      path: `${process.env.E2E_SCREENSHOTS}/ask-panel-${info.project.name}.png`,
+    });
+
+  await link.click();
+  await expect(page).toHaveURL(/lot=\d+/);
+  if (info.project.name === "phone") {
+    // The panel steps aside for the lot sheet; the conversation is still there.
+    await expect(panel).toHaveCount(0);
+    await page.getByRole("button", { name: "Close lot" }).click();
+    await page.getByRole("button", { name: "Ask Lotline" }).click();
+  }
+  await expect(panel.getByText("Find me an OptiPlex")).toBeVisible();
+
+  // Expand to the full page: same conversation.
+  await panel.getByRole("link", { name: "Open full page" }).click();
+  await expect(page).toHaveURL(/\/assistant\?c=[0-9a-f-]{36}/);
+  await expect(
+    page
+      .getByRole("list", { name: "Conversation" })
+      .getByText("Find me an OptiPlex"),
+  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Ask Lotline" })).toHaveCount(
+    0,
   );
 });

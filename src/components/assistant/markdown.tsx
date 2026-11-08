@@ -11,7 +11,14 @@ import remarkGfm from "remark-gfm";
  * open in the lot sheet, auctions in Browse, ABC links in a new tab. Anything else renders as
  * plain text (model output is untrusted). No raw HTML.
  */
-export function AssistantMarkdown({ text }: { text: string }) {
+export function AssistantMarkdown({
+  text,
+  onLotOpen,
+}: {
+  text: string;
+  /** a lot link was tapped */
+  onLotOpen?: () => void;
+}) {
   const [, setLot] = useQueryState(
     "lot",
     parseAsInteger.withOptions({ history: "push" }),
@@ -29,6 +36,7 @@ export function AssistantMarkdown({ text }: { text: string }) {
                 return;
               e.preventDefault();
               void setLot(Number(lot[1]));
+              onLotOpen?.();
             }}
             className="font-medium text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
           >
