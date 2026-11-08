@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { type ReactNode, useState } from "react";
 import { CatalogueProvider } from "./catalogue/catalogue-provider";
+import { LiveProvider } from "./live/live-provider";
 
 export function AppProviders({ children }: { children: ReactNode }) {
   const [client] = useState(
@@ -17,7 +18,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={client}>
       <NuqsAdapter>
-        <CatalogueProvider>{children}</CatalogueProvider>
+        <CatalogueProvider>
+          <LiveProvider>{children}</LiveProvider>
+        </CatalogueProvider>
       </NuqsAdapter>
     </QueryClientProvider>
   );

@@ -7,3 +7,16 @@ export const PAY_WITHIN_DAYS = 4;
 export function defaultPayBy(closedAt: Date | number, tz = DISPLAY_TZ): string {
   return addDaysToDate(localDate(closedAt, tz), PAY_WITHIN_DAYS);
 }
+
+/** "Tue 10 Nov" for a YYYY-MM-DD pay-by date. */
+export function formatPayBy(ymd: string): string {
+  const [y, m, d] = ymd.split("-").map(Number);
+  return new Intl.DateTimeFormat("en-GB", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+  })
+    .format(new Date(Date.UTC(y, m - 1, d, 12)))
+    .replace(",", "");
+}

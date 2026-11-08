@@ -31,6 +31,8 @@ import type { LotView } from "@/lib/lot-view";
 import type { CatalogueDoc } from "@/lib/search/engine";
 import type { RunInfo } from "@/lib/search/runs";
 import { cn } from "@/lib/utils";
+import { LotPlan } from "../live/lot-plan";
+import { WatchButton } from "../live/watch-button";
 import {
   AllIn,
   BigCountdown,
@@ -228,6 +230,7 @@ export function LotDetail({
               Bid on ABC <ExternalLink />
             </a>
           </Button>
+          <WatchButton lotId={b.id} />
           <Button asChild size="lg" variant="outline" className="h-11">
             <Link
               aria-label="Ask Lotline about this lot"
@@ -245,6 +248,7 @@ export function LotDetail({
               : " "}
         </p>
       </section>
+      <LotPlan lotId={b.id} rates={rates} />
       {compact && photos}
 
       {run && run.size >= 3 && !final && (

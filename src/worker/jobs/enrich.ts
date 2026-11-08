@@ -182,7 +182,11 @@ export async function drainFetchRequests(
         .select({ type: lots.type, at: lots.detailFetchedAt })
         .from(lots)
         .where(eq(lots.id, lotId));
-      const fresh = known?.at && Date.now() - known.at.getTime() < 10_000;
+      // "That's me" needs who leads right now: always read it fresh.
+      const fresh =
+        req.reason !== "capture" &&
+        known?.at &&
+        Date.now() - known.at.getTime() < 10_000;
       if (!fresh)
         await fetchAndStoreDetail(
           db,

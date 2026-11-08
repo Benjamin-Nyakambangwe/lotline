@@ -14,6 +14,7 @@
  *                ended without us seeing the result, then sold lots for market insights
  *  - history     the 12-month backfill of past lots, one gentle request at a time (resumes)
  *  - requests    the web app's on-demand fetches (LISTEN lotline_fetch + 2 s poll)
+ *  - track       watched lots, read more often near the close (8 s when hot); status + alerts
  *  - heartbeat   worker_heartbeat row + /healthz freshness
  */
 import { randomBytes } from "node:crypto";
@@ -37,6 +38,7 @@ import {
   historyStep,
   initialHistoryState,
 } from "./jobs/history";
+import { trackStep } from "./jobs/track";
 import { Leader } from "./leader";
 import { createLogger } from "./log";
 import { Loops } from "./loops";
@@ -219,6 +221,12 @@ async function main() {
         },
       },
       {
+        name: "track",
+        initialDelayMs: 3_000,
+        run: () => trackStep(db, abc, log),
+        errorDelayMs: 5_000,
+      },
+      {
         name: "requests",
         run: async () => {
           await drainFetchRequests(db, abc, log);
@@ -275,7 +283,10 @@ async function main() {
       connectionString: cfg.DATABASE_URL,
       application_name: "lotline-worker-listen",
     });
-    listener.on("notification", () => loops.wake("requests"));
+    listener.on("notification", () => {
+      loops.wake("requests");
+      loops.wake("track");
+    });
     listener.on("error", () => {
       listener = null;
     });

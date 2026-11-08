@@ -50,6 +50,9 @@ sudo -u postgres psql -d lotline -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 - **Sold sweep:** sold lots go into market insights every 3 hours. The first run backfills about 1,500.
 - **Details:** each lot's category, condition, fees and photos are fetched one at a time, every few seconds. Once every open lot has them, the worker completes sold lots for market insights.
 - **Requests from the app:** handled as they arrive (LISTEN `lotline_fetch`).
+- **Live tracking:** every watched lot is read more often as it nears its close: every 2 minutes in its last hour, every 30 s in the last 20 minutes, every 8 s in the last 5 and until it's final (from lot detail, since search lags during a close). After each pass, everyone's status is re-judged and alerts recorded (outbid, winning again, closing soon, extended, won, lost), each exactly once.
+- **Auctions:** every 30 minutes, each auction on sale is found and its lots tagged.
+- **History backfill:** 12 months of past lots, one gentle request at a time (paused 16:00–22:00). `npm run history` shows progress.
 
 All requests share one limiter (≤ 6 concurrent, ≤ 3/s) and a circuit breaker. `ABC_POLLING_ENABLED=false` stops everything. Only one worker polls at a time: a second instance stands by and takes over within seconds (Postgres advisory lock). Health: `GET http://localhost:8081/healthz`.
 
