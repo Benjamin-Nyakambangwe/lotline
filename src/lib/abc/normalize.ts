@@ -1,7 +1,7 @@
 import { nextBidAfter } from "../domain/increments";
 import { type Cents, toCents } from "../domain/money";
 import { quantityOf } from "../domain/titles";
-import type { AbcDetail, AbcListItem } from "./schemas";
+import type { AbcCampaign, AbcDetail, AbcListItem } from "./schemas";
 import { thumbOf } from "./urls";
 
 /** A lot as it appears in search results, in our units (cents, Dates). */
@@ -150,5 +150,38 @@ export function normalizeDetail(x: AbcDetail): LotDetailRow {
         }
       : null,
     url: x.Url ?? null,
+  };
+}
+
+/** An auction from ABC's auction list. `name` is exactly what the campaign search filter takes. */
+export interface AuctionMeta {
+  abcId: number;
+  name: string;
+  photoUrl: string | null;
+  kind: string | null;
+  address: string | null;
+  startAt: Date | null;
+  /** when its lots start closing */
+  closesFrom: Date | null;
+  lotCount: number | null;
+}
+
+export function normalizeCampaign(x: AbcCampaign): AuctionMeta {
+  let name = x.Title.trim();
+  try {
+    const f = JSON.parse(x.Query?.facets ?? "{}") as { campaign?: string[] };
+    if (f.campaign?.[0]) name = f.campaign[0];
+  } catch {
+    // keep the title
+  }
+  return {
+    abcId: x.Id,
+    name,
+    photoUrl: x.Photo || null,
+    kind: x.Description?.trim() || null,
+    address: x.Location?.trim() || null,
+    startAt: date(x.StartDate),
+    closesFrom: date(x.EndDate),
+    lotCount: x.LotCount ?? null,
   };
 }

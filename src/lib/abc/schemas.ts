@@ -110,3 +110,18 @@ export function unwrap(payload: unknown): unknown {
   }
   return payload;
 }
+
+/** An auction in ABC's auction list (GET /campaigns at the API root). */
+export const campaignItemSchema = z.looseObject({
+  Id: z.number(),
+  Title: z.string(),
+  Photo: z.string().nullish(),
+  Description: z.string().nullish(),
+  Location: z.string().nullish(),
+  StartDate: z.string().nullish(),
+  EndDate: z.string().nullish(),
+  LotCount: z.number().nullish(),
+  Query: z.looseObject({ facets: z.string().nullish() }).nullish(),
+});
+export type AbcCampaign = z.infer<typeof campaignItemSchema>;
+export const campaignListSchema = z.looseObject({ List: z.array(z.unknown()) });

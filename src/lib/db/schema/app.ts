@@ -105,6 +105,15 @@ export const campaigns = pgTable("campaigns", {
   name: text("name").notNull().unique(),
   code: text("code"),
   location: text("location"),
+  /** from ABC's auction list: its id, cover photo, type ("Goods", "Yard Special"), address */
+  abcId: integer("abc_id").unique(),
+  photoUrl: text("photo_url"),
+  kind: text("kind"),
+  address: text("address"),
+  startAt: ts("start_at"),
+  /** when its lots start closing (ABC's EndDate) */
+  closesFrom: ts("closes_from"),
+  lotCount: integer("lot_count"),
   firstSeen: ts("first_seen").notNull().defaultNow(),
   lastSeen: ts("last_seen").notNull().defaultNow(),
   earliestEnd: ts("earliest_end"),

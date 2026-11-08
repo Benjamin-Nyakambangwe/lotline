@@ -1,7 +1,11 @@
 import type { AbcClient, SearchPage } from "@/lib/abc/client";
 import type { LotListRow } from "@/lib/abc/normalize";
 import type { Db } from "@/lib/db/client";
-import { runningAuctionNames, upsertAuction } from "@/lib/db/queries/auctions";
+import {
+  runningAuctionNames,
+  saveAuctionMeta,
+  upsertAuction,
+} from "@/lib/db/queries/auctions";
 import type { Logger } from "../log";
 
 /** ABC returns at most this many values per facet. */
@@ -75,7 +79,21 @@ export async function syncAuctions(db: Db, abc: AbcClient, log: Logger) {
     tagged += (await upsertAuction(db, name, items)).tagged;
   };
 
+  // ABC's own auction list: photos, types, addresses, and the exact names to search by.
+  let listed: string[] = [];
+  try {
+    const metas = await abc.auctions("sync");
+    requests++;
+    await saveAuctionMeta(db, metas);
+    listed = metas.map((m) => m.name);
+  } catch (e) {
+    log.warn(
+      { err: String((e as Error).message) },
+      "auction list unavailable; using search facets",
+    );
+  }
   const known = new Set([
+    ...listed,
     ...bucketsOf(root, "campaign").map((b) => b.Value),
     ...(await runningAuctionNames(db)),
   ]);

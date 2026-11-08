@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const shots = process.env.E2E_SCREENSHOTS;
 
-test("auctions list every auction with a ticking countdown, and open into Browse", async ({
+test("auctions show as picture cards with when they close, closed ones on request, and open into Browse", async ({
   page,
 }, info) => {
   await page.goto("/auctions");
@@ -12,13 +12,11 @@ test("auctions list every auction with a ticking countdown, and open into Browse
   const cards = page.locator("main a[href^='/browse?auction=']");
   await expect(cards.first()).toBeVisible({ timeout: 20_000 });
 
-  // The countdown visibly ticks (seconds change).
-  const timer = cards.first().getByRole("timer");
-  const before = await timer.innerText();
-  await expect
-    .poll(() => timer.innerText(), { timeout: 4_000 })
-    .not.toBe(before);
-
+  // A cover picture, when it closes, no countdown.
+  const first = cards.first();
+  await expect(first.locator("img").first()).toBeVisible();
+  await expect(first.getByText(/Closes |Closing now/)).toBeVisible();
+  await expect(first.getByRole("timer")).toHaveCount(0);
   if (shots)
     await page.screenshot({
       path: `${shots}/auctions-${info.project.name}.png`,
@@ -36,10 +34,29 @@ test("auctions list every auction with a ticking countdown, and open into Browse
   );
   await page.getByRole("button", { name: /^All/ }).click();
 
+  // Closed auctions are hidden until asked for.
+  const toggle = page.getByRole("button", { name: /Show closed auctions/ });
+  if (await toggle.isVisible()) {
+    await expect(
+      page.getByRole("heading", { name: /Closed in the last 30 days/ }),
+    ).toHaveCount(0);
+    await toggle.click();
+    await expect(
+      page.getByRole("heading", { name: /Closed in the last 30 days/ }),
+    ).toBeVisible();
+    await expect(
+      page
+        .locator("main a[href^='https://app.abcauctions.co.zw/search']")
+        .first(),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Hide closed auctions" }).click();
+  }
+
   // Open an auction: Browse filtered to it, with its banner and countdown.
-  const title = await cards.first().locator("h3").innerText();
-  await cards.first().click();
-  await expect(page).toHaveURL(/\/browse\?auction=/);
+  const title = await first.locator("h3").innerText();
+  await first.click();
+  // Dev mode compiles /browse on first visit: allow for it.
+  await expect(page).toHaveURL(/\/browse\?auction=/, { timeout: 20_000 });
   const banner = page.locator("section[aria-label='Auction']");
   await expect(banner).toContainText(title, { timeout: 20_000 });
   await expect(banner.getByRole("timer")).toBeVisible();

@@ -1,6 +1,6 @@
 import { and, inArray, sql } from "drizzle-orm";
 import type { PgDatabase } from "drizzle-orm/pg-core";
-import type { LotListRow } from "../../abc/normalize";
+import type { AuctionMeta, LotListRow } from "../../abc/normalize";
 import { parseAuctionName } from "../../domain/auctions";
 import { isPlaceholderEnd } from "../../domain/closing";
 import { campaigns, lots } from "../schema";
@@ -84,4 +84,54 @@ export async function runningAuctionNames(db: AnyDb): Promise<string[]> {
     .from(campaigns)
     .where(sql`${campaigns.latestEnd} > now() - interval '1 day'`);
   return rows.map((r) => r.name);
+}
+
+/** Which of ABC's sites an address is at. */
+const siteOf = (address: string | null) =>
+  address && /bulawayo/i.test(address)
+    ? "Bulawayo"
+    : address && /harare/i.test(address)
+      ? "Harare"
+      : null;
+
+/** Save the details from ABC's auction list (photo, type, address, dates, lot count). */
+export async function saveAuctionMeta(
+  db: AnyDb,
+  metas: AuctionMeta[],
+  now = new Date(),
+) {
+  for (const m of metas) {
+    const { code } = parseAuctionName(m.name);
+    await db
+      .insert(campaigns)
+      .values({
+        name: m.name,
+        code,
+        location: siteOf(m.address),
+        abcId: m.abcId,
+        photoUrl: m.photoUrl,
+        kind: m.kind,
+        address: m.address,
+        startAt: m.startAt,
+        closesFrom: m.closesFrom,
+        lotCount: m.lotCount,
+        firstSeen: now,
+        lastSeen: now,
+        earliestEnd: m.closesFrom,
+      })
+      .onConflictDoUpdate({
+        target: campaigns.name,
+        set: {
+          abcId: sql`excluded.abc_id`,
+          photoUrl: sql`coalesce(excluded.photo_url, ${campaigns.photoUrl})`,
+          kind: sql`coalesce(excluded.kind, ${campaigns.kind})`,
+          address: sql`coalesce(excluded.address, ${campaigns.address})`,
+          startAt: sql`coalesce(excluded.start_at, ${campaigns.startAt})`,
+          closesFrom: sql`coalesce(excluded.closes_from, ${campaigns.closesFrom})`,
+          lotCount: sql`coalesce(excluded.lot_count, ${campaigns.lotCount})`,
+          location: sql`coalesce(${campaigns.location}, excluded.location)`,
+          lastSeen: sql`excluded.last_seen`,
+        },
+      });
+  }
 }

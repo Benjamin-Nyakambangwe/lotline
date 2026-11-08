@@ -1,13 +1,17 @@
 import { Breaker } from "./breaker";
 import { Limiter, type Priority } from "./limiter";
 import {
+  type AuctionMeta,
   type LotDetailRow,
   type LotListRow,
+  normalizeCampaign,
   normalizeDetail,
   normalizeListItem,
 } from "./normalize";
 import {
   type AbcFacet,
+  campaignItemSchema,
+  campaignListSchema,
   detailSchema,
   listItemSchema,
   searchEnvelopeSchema,
@@ -180,6 +184,21 @@ export class AbcClient {
     return normalizeDetail(parsed.data);
   }
 
+  /** The auctions ABC is running now, with their cover photo, type and address. */
+  async auctions(priority: Priority = "sync"): Promise<AuctionMeta[]> {
+    const raw = await this.request(
+      "/campaigns?current=1&pageindex=0&pagesize=100",
+      priority,
+    );
+    const env = campaignListSchema.safeParse(unwrap(raw));
+    if (!env.success)
+      throw new AbcError("auction list had an unexpected shape", "parse");
+    return env.data.List.flatMap((x) => {
+      const p = campaignItemSchema.safeParse(x);
+      return p.success ? [normalizeCampaign(p.data)] : [];
+    });
+  }
+
   /** Resolve an ABC lot number (as printed on invoices) to a lot Id, across all statuses. */
   async resolveLotNumber(
     lotNumber: number,
@@ -260,7 +279,11 @@ export class AbcClient {
         attempt,
       });
     try {
-      const res = await this.o.fetch(`${this.o.baseUrl}/${path}`, {
+      // Paths starting with "/" live at the API root (e.g. /campaigns), the rest under /lots.
+      const url = path.startsWith("/")
+        ? `${this.o.baseUrl.replace(/\/lots\/?$/, "")}${path}`
+        : `${this.o.baseUrl}/${path}`;
+      const res = await this.o.fetch(url, {
         headers: { "User-Agent": this.o.userAgent, Accept: "application/json" },
         signal: ctrl.signal,
       });
