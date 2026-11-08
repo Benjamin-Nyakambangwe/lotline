@@ -1,17 +1,21 @@
-import { FolderKanban } from "lucide-react";
 import type { Metadata } from "next";
-import { ComingSoonPage } from "@/components/coming-soon-page";
+import { Suspense } from "react";
+import { PageSkeleton } from "@/components/page-skeleton";
+import { ProjectsList } from "@/components/projects/projects-list";
+import { requireUser } from "@/server/dal";
+import { projectsOverview } from "@/server/projects";
 
 export const metadata: Metadata = { title: "Projects" };
 
 export default function ProjectsPage() {
   return (
-    <ComingSoonPage
-      title="Projects"
-      description="Plan a build: what you need, an all-in budget, max bids and backup lots in closing order."
-      icon={<FolderKanban />}
-      emptyTitle="No projects yet"
-      emptyBody="A project groups lots into needs, like “2× Proxmox node”, and keeps your worst-case total under budget."
-    />
+    <Suspense fallback={<PageSkeleton />}>
+      <Projects />
+    </Suspense>
   );
+}
+
+async function Projects() {
+  const user = await requireUser();
+  return <ProjectsList projects={await projectsOverview(user.id)} />;
 }

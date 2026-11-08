@@ -1,5 +1,5 @@
 import { readFileSync, statSync } from "node:fs";
-import type { Page } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 const LOG = process.env.E2E_SERVER_LOG ?? "";
 
@@ -28,9 +28,15 @@ export async function waitForMagicLink(
 /** Sign in through the real sign-in form and the emailed (logged) magic link. */
 export async function signInViaForm(page: Page, email: string) {
   await page.goto("/sign-in");
+  await page.waitForLoadState("networkidle");
   const offset = logOffset();
-  await page.getByLabel("Email").fill(email);
-  await page.getByRole("button", { name: "Send sign-in link" }).click();
+  const send = page.getByRole("button", { name: "Send sign-in link" });
+  // A dev-server reload can wipe the field after it's filled: fill until the button enables.
+  await expect(async () => {
+    await page.getByLabel("Email").fill(email);
+    await expect(send).toBeEnabled({ timeout: 1_000 });
+  }).toPass({ timeout: 20_000 });
+  await send.click();
   await page.getByText(/Check (the server terminal|your email)/).waitFor();
   await page.goto(await waitForMagicLink(email, offset));
   await page.waitForURL("**/dashboard");

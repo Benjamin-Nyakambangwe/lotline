@@ -34,6 +34,7 @@ import { cn } from "@/lib/utils";
 import { useAssistantChat } from "../assistant/chat-provider";
 import { LotPlan } from "../live/lot-plan";
 import { WatchButton } from "../live/watch-button";
+import { AddToProject } from "../projects/add-to-project";
 import {
   AllIn,
   BigCountdown,
@@ -232,6 +233,7 @@ export function LotDetail({
             </a>
           </Button>
           <WatchButton lotId={b.id} />
+          <AddToProject lotId={b.id} />
           <AskAboutLot id={b.id} title={b.title} />
         </div>
         <p className="mt-2 text-xs text-muted-foreground">

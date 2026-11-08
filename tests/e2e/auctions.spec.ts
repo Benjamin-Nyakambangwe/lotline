@@ -15,7 +15,8 @@ test("auctions show as picture cards with when they close, closed ones on reques
   // A cover picture, when it closes, no countdown.
   const first = cards.first();
   await expect(first.locator("img").first()).toBeVisible();
-  await expect(first.getByText(/Closes |Closing now/)).toBeVisible();
+  // While an auction closes, the pill and the line both say "Closing now".
+  await expect(first.getByText(/Closes |Closing now/).first()).toBeVisible();
   await expect(first.getByRole("timer")).toHaveCount(0);
   if (shots)
     await page.screenshot({
