@@ -33,6 +33,17 @@ export function getAuth(): Auth {
         });
         return;
       }
+      if (
+        env.AUTH_EMAIL_MODE === "link-copy" &&
+        email.toLowerCase() === env.OWNER_EMAIL?.toLowerCase()
+      ) {
+        // No email service: the owner's own sign-in link goes to the server logs, which only
+        // the people running the app can read. Everyone else joins through invite links.
+        console.log(
+          `[auth] owner sign-in link (works once, expires in 15 minutes): ${url}`,
+        );
+        return;
+      }
       if (env.AUTH_EMAIL_MODE === "console" && !production) {
         // Development only: the link appears in the terminal running `npm run dev`.
         console.log(`\n  Lotline sign-in link for ${email}:\n  ${url}\n`);

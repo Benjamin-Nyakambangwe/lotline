@@ -45,12 +45,19 @@ export function SignInForm({
           <MailCheck className="size-6" aria-hidden="true" />
         </div>
         <h1 className="text-xl font-semibold">
-          Check {mode === "console" ? "the server terminal" : "your email"}
+          Check{" "}
+          {mode === "console"
+            ? "the server terminal"
+            : mode === "link-copy"
+              ? "the server logs"
+              : "your email"}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           {mode === "console"
             ? "In development, the sign-in link is printed in the terminal running the app."
-            : "If this email has access to Lotline, a sign-in link is on its way. It works once and expires in 15 minutes."}
+            : mode === "link-copy"
+              ? "If this is the owner's email, the sign-in link is in the web service's logs. It works once and expires in 15 minutes."
+              : "If this email has access to Lotline, a sign-in link is on its way. It works once and expires in 15 minutes."}
         </p>
         <Button variant="ghost" className="mt-6" onClick={() => setSent(false)}>
           Use a different email
@@ -65,37 +72,33 @@ export function SignInForm({
         <h1 className="text-2xl font-semibold tracking-tight">Sign in</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {mode === "link-copy"
-            ? "Lotline is invite-only. Open the invite link you were sent, or ask the owner for a fresh one."
+            ? "Lotline is invite-only: open the invite link you were sent, or ask the owner for a fresh one. Owner: enter your email and your sign-in link appears in the server logs."
             : "Lotline is invite-only. Enter the email you were invited with and we'll send you a sign-in link."}
         </p>
       </div>
-      {mode !== "link-copy" && (
-        <>
-          <div className="grid gap-1.5">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              required
-              autoComplete="email"
-              inputMode="email"
-              enterKeyHint="go"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="h-11"
-            />
-          </div>
-          {error && <p className="text-sm text-destructive">{error}</p>}
-          <Button
-            type="submit"
-            size="lg"
-            className="h-11"
-            disabled={pending || !email}
-          >
-            {pending ? "Sending…" : "Send sign-in link"}
-          </Button>
-        </>
-      )}
+      <div className="grid gap-1.5">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          required
+          autoComplete="email"
+          inputMode="email"
+          enterKeyHint="go"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="h-11"
+        />
+      </div>
+      {error && <p className="text-sm text-destructive">{error}</p>}
+      <Button
+        type="submit"
+        size="lg"
+        className="h-11"
+        disabled={pending || !email}
+      >
+        {pending ? "Sending…" : "Send sign-in link"}
+      </Button>
     </form>
   );
 }
