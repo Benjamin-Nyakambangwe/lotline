@@ -9,7 +9,7 @@ const OWNER = process.env.E2E_OWNER_EMAIL ?? "owner@lotline.test";
 setup("owner signs in through the sign-in form", async ({ page }) => {
   await signInViaForm(page, OWNER);
   await expect(
-    page.getByRole("heading", { name: "Nothing on the line yet." }),
+    page.getByRole("region", { name: "Your numbers" }),
   ).toBeVisible();
   mkdirSync(dirname(OWNER_STATE), { recursive: true });
   await page.context().storageState({ path: OWNER_STATE });

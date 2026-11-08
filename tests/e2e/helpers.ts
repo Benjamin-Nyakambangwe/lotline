@@ -35,3 +35,34 @@ export async function signInViaForm(page: Page, email: string) {
   await page.goto(await waitForMagicLink(email, offset));
   await page.waitForURL("**/dashboard");
 }
+
+/**
+ * The throwaway test database (same derivation as scripts/with-test-db.mjs), for tests that
+ * need to arrange data. Never the real database.
+ */
+export async function withTestDb<T>(
+  fn: (
+    q: (sql: string, params?: unknown[]) => Promise<Record<string, unknown>[]>,
+  ) => Promise<T>,
+) {
+  const { readFileSync } = await import("node:fs");
+  const { Client } = await import("pg");
+  const env = Object.fromEntries(
+    readFileSync(".env.local", "utf8")
+      .split("\n")
+      .filter((l) => /^[A-Z_]+=/.test(l))
+      .map((l) => [l.slice(0, l.indexOf("=")), l.slice(l.indexOf("=") + 1)]),
+  );
+  const url = new URL(env.DATABASE_URL);
+  url.pathname = "/lotline_test";
+  const client = new Client({ connectionString: url.toString() });
+  await client.connect();
+  try {
+    return await fn(
+      async (sql, params) =>
+        (await client.query(sql, params as unknown[])).rows,
+    );
+  } finally {
+    await client.end();
+  }
+}

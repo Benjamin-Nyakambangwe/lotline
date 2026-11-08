@@ -30,7 +30,7 @@ test("the owner sees the dashboard and the admin area", async ({
 }, info) => {
   await page.goto("/dashboard");
   await expect(
-    page.getByRole("heading", { name: "Nothing on the line yet." }),
+    page.getByRole("region", { name: "Your numbers" }),
   ).toBeVisible();
   if (shots)
     await page.screenshot({
@@ -77,9 +77,7 @@ test("an invited friend joins through their link, once, as a member", async ({
   await expect(p2.getByText(`Signing in as ${friend}`)).toBeVisible();
   await p2.getByRole("button", { name: "Continue" }).click();
   await p2.waitForURL("**/dashboard");
-  await expect(
-    p2.getByRole("heading", { name: "Nothing on the line yet." }),
-  ).toBeVisible();
+  await expect(p2.getByRole("region", { name: "Your numbers" })).toBeVisible();
   if (shots)
     await p2.screenshot({
       path: `${shots}/dashboard-light-${info.project.name}.png`,
