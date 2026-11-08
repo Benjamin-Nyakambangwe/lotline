@@ -10,6 +10,7 @@ import {
   Layers,
   MapPin,
   Package,
+  Sparkles,
   Truck,
 } from "lucide-react";
 import Image from "next/image";
@@ -212,6 +213,14 @@ export function LotDetail({
             >
               Bid on ABC <ExternalLink />
             </a>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="h-11">
+            <Link
+              aria-label="Ask Lotline about this lot"
+              href={`/assistant?q=${encodeURIComponent(`Is lot ${b.id} (${b.title}) worth bidding on? What should my max be?`)}`}
+            >
+              <Sparkles /> Ask
+            </Link>
           </Button>
         </div>
         <p className="mt-2 text-xs text-muted-foreground">

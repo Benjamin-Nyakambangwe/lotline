@@ -10,6 +10,7 @@ import {
   Search,
   Settings,
   ShieldCheck,
+  Sparkles,
   Trophy,
 } from "lucide-react";
 import Link from "next/link";
@@ -19,6 +20,7 @@ import { cn } from "@/lib/utils";
 export type NavIcon =
   | "dashboard"
   | "auctions"
+  | "assistant"
   | "live"
   | "browse"
   | "projects"
@@ -30,6 +32,7 @@ export type NavIcon =
 export const ICONS: Record<NavIcon, LucideIcon> = {
   dashboard: LayoutDashboard,
   auctions: Gavel,
+  assistant: Sparkles,
   live: Radio,
   browse: Search,
   projects: FolderKanban,
@@ -51,6 +54,7 @@ export const PRIMARY_NAV: NavItem[] = [
   { href: "/auctions", label: "Auctions", short: "Auctions", icon: "auctions" },
   { href: "/browse", label: "Browse", short: "Browse", icon: "browse" },
   { href: "/watchlist", label: "Watchlist", short: "Live", icon: "live" },
+  { href: "/assistant", label: "Ask Lotline", short: "Ask", icon: "assistant" },
   { href: "/projects", label: "Projects", short: "Projects", icon: "projects" },
   { href: "/won", label: "Won", short: "Won", icon: "won" },
   { href: "/insights", label: "Insights", short: "Insights", icon: "insights" },

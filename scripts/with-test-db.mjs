@@ -27,6 +27,9 @@ const child = spawn(cmd, args, {
     AUTH_EMAIL_MODE: "console",
     APP_URL: "http://localhost:3001",
     BETTER_AUTH_URL: "http://localhost:3001",
+    // The assistant answers from a script: tests never call Anthropic or spend money.
+    ASSISTANT_MODE: "fake",
+    ANTHROPIC_API_KEY: "",
   },
 });
 child.on("exit", (code) => process.exit(code ?? 0));

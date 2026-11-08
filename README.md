@@ -76,6 +76,17 @@ Lotline is invite-only. The account named by `OWNER_EMAIL` in `.env.local` can a
 
 Invite others from **Admin → People**. You get a link to send privately; it signs them in once and lasts 7 days. The same form makes a fresh sign-in link for an existing member.
 
+### The assistant ("Ask Lotline")
+
+`/assistant` is a chat with Claude (Opus 5.5) that answers from Lotline's own data through tools: search open lots, read a lot, list auctions, past prices (including whether lots late in a run fetch more), fees and the bid ladder, and the person's watchlist. It can propose watching or unwatching a lot; nothing changes until the person taps Confirm. It never bids.
+
+- Set `ANTHROPIC_API_KEY` in `.env.local` (and in Railway's variables) and restart `npm run dev`.
+- Every model call is priced from its usage and recorded in `ai_usage`; a person's questions stop when they reach their monthly cap (`user_settings.ai_cap_cents`, default $10).
+- Conversations are stored append-only (`ai_messages`), exactly as sent and received: Claude's thinking blocks are only valid in the history that produced them.
+- The system prompt and tools are frozen and cached; per-question context (time, name, location) goes in a system message after the question.
+- Refusals from Claude's safety classifiers are retried on Anthropic's recommended fallback model (`fallbacks: "default"`).
+- Tests and the e2e suite use a scripted stand-in (`ASSISTANT_MODE=fake`, set by `scripts/with-test-db.mjs`) and never call Anthropic.
+
 ### End-to-end tests
 
 E2E runs against a separate `lotline_test` database (create it once: `createdb -O lotline lotline_test`, then `CREATE EXTENSION pg_trgm` in it) with a throwaway owner, `owner@lotline.test`:

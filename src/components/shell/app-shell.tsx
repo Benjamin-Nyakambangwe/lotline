@@ -1,6 +1,6 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { type ReactNode, Suspense } from "react";
 import { Wordmark } from "@/components/brand/wordmark";
@@ -82,6 +82,13 @@ export function AppShell({
             <Wordmark className="text-base" />
           </Link>
           <div className="flex items-center gap-1">
+            <Link
+              href="/assistant"
+              aria-label="Ask Lotline"
+              className="flex size-9 items-center justify-center rounded-lg text-primary hover:bg-muted"
+            >
+              <Sparkles className="size-[18px]" />
+            </Link>
             <button
               type="button"
               onClick={openCommandMenu}

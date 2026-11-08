@@ -88,6 +88,8 @@ export const userSettings = pgTable("user_settings", {
     .notNull()
     .default("comfortable"),
   reduceMotion: boolean("reduce_motion").notNull().default(false),
+  /** the assistant's monthly spending cap for this person, in US cents */
+  aiCapCents: integer("ai_cap_cents").notNull().default(1000),
   alertPrefs: jsonb("alert_prefs")
     .$type<Record<string, unknown>>()
     .notNull()
@@ -601,3 +603,86 @@ export const historyCrawls = pgTable("history_crawls", {
   doneAt: ts("done_at"),
   doneReason: text("done_reason"),
 });
+
+/*
+ * The assistant. Conversations are append-only: Claude's thinking blocks are only valid in the
+ * exact history that produced them, so messages are stored as the API returned them and never
+ * edited. Every model call is priced and recorded in ai_usage for the per-person monthly cap.
+ */
+export const aiConversations = pgTable(
+  "ai_conversations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: userRef(),
+    title: text("title").notNull(),
+    createdAt: created(),
+    updatedAt: updated(),
+  },
+  (t) => [index("ai_conversations_user_idx").on(t.userId, t.updatedAt)],
+);
+
+export const aiMessages = pgTable(
+  "ai_messages",
+  {
+    id: bigint("id", { mode: "number" })
+      .primaryKey()
+      .generatedAlwaysAsIdentity(),
+    conversationId: uuid("conversation_id")
+      .notNull()
+      .references(() => aiConversations.id, { onDelete: "cascade" }),
+    seq: integer("seq").notNull(),
+    role: text("role").$type<"user" | "assistant" | "system">().notNull(),
+    /** the message content exactly as sent to or returned by the API */
+    content: jsonb("content").$type<unknown>().notNull(),
+    createdAt: created(),
+  },
+  (t) => [uniqueIndex("ai_messages_seq_idx").on(t.conversationId, t.seq)],
+);
+
+export const aiUsage = pgTable(
+  "ai_usage",
+  {
+    id: bigint("id", { mode: "number" })
+      .primaryKey()
+      .generatedAlwaysAsIdentity(),
+    userId: userRef(),
+    conversationId: uuid("conversation_id").references(
+      () => aiConversations.id,
+      { onDelete: "set null" },
+    ),
+    at: ts("at").notNull().defaultNow(),
+    model: text("model").notNull(),
+    inputTokens: integer("input_tokens").notNull().default(0),
+    outputTokens: integer("output_tokens").notNull().default(0),
+    cacheReadTokens: integer("cache_read_tokens").notNull().default(0),
+    cacheWriteTokens: integer("cache_write_tokens").notNull().default(0),
+    /** cost in millionths of a US dollar */
+    costMicros: bigint("cost_micros", { mode: "number" }).notNull(),
+  },
+  (t) => [index("ai_usage_user_at_idx").on(t.userId, t.at)],
+);
+
+/** Changes the assistant proposes; nothing happens until the person confirms. */
+export const aiActions = pgTable(
+  "ai_actions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: userRef(),
+    conversationId: uuid("conversation_id")
+      .notNull()
+      .references(() => aiConversations.id, { onDelete: "cascade" }),
+    kind: text("kind").$type<"watch" | "unwatch">().notNull(),
+    lotId: integer("lot_id")
+      .notNull()
+      .references(() => lots.id, { onDelete: "cascade" }),
+    /** watch: { maxBid?: cents, note?: string } */
+    payload: jsonb("payload").$type<Record<string, unknown>>().notNull(),
+    status: text("status")
+      .$type<"pending" | "confirmed" | "declined">()
+      .notNull()
+      .default("pending"),
+    createdAt: created(),
+    decidedAt: ts("decided_at"),
+  },
+  (t) => [index("ai_actions_conversation_idx").on(t.conversationId)],
+);
